@@ -1,4 +1,4 @@
-package edu.ucdenver.domainlogic;
+package edu.ucdenver.store;
 
 public class Admin extends User{
     //okay testing branchone

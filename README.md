@@ -14,6 +14,7 @@ Functions:
 <br />
 <br />
 Functions:
+* Login information
 * send/receiveMessage client Side
 
 

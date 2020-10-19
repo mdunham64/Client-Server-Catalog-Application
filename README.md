@@ -14,7 +14,9 @@ Functions:
 <br />
 <br />
 Functions:
-* send/receiveMessage client Side
+* Login information to access admin or user functions
+* Browse store
+* list categories, items, etc
 
 
 # Server #

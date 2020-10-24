@@ -1,5 +1,7 @@
 package edu.ucdenver.store;
 
 public class Customer extends User{
-    //Hi Mac!
+    public Customer(String username, String email, String password){
+        super(username, email, password);
+    }
 }

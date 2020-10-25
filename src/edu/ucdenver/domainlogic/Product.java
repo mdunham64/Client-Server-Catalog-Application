@@ -1,6 +1,9 @@
 package edu.ucdenver.domainlogic;
 
+import com.sun.xml.internal.bind.v2.TODO;
+
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public abstract class Product {
     private String productID;
@@ -8,6 +11,9 @@ public abstract class Product {
     private String brandName;
     private String productDescription;
     private LocalDate dateofIncorporation;
+    //All products can have one or more catgories. The following array list allows us to store many cats for each product
+    private ArrayList<Category> categories = new ArrayList<Category>();
+
 
     Product(String productID, String productName, String brandName, String productDescription, LocalDate dateofIncorporation){
         this.productID = productID;
@@ -15,6 +21,15 @@ public abstract class Product {
         this.productDescription = productDescription;
         this.brandName = brandName;
         this.dateofIncorporation = dateofIncorporation;
+        this.categories.add(new Category()); //default constructor sets item's category to 'home'
+    }
+
+    public String getProductDetails(){
+        String deets = "~~~PRODUCT DETAILS~~~\n";
+        deets += String.format("Name: %s%nID: %s%nCategory: %s%nBrand: %s%nDescription: %s%nInc: %s%n",
+                this.getProductName(), this.getProductID(), this.getCategoryNames(), this.getBrandName(),
+                this.getProductDescription(), this.getDateofIncorporation());
+        return deets;
     }
 
     public String getProductID() {
@@ -56,4 +71,17 @@ public abstract class Product {
     public void setDateofIncorporation(LocalDate dateofIncorporation) {
         this.dateofIncorporation = dateofIncorporation;
     }
+    public ArrayList<Category> getCategories() {
+        return categories;
+    }
+
+    //this function returns the names of the categories the prod belongs to
+    public String getCategoryNames(){
+        String names= "";
+        for(Category c : categories){
+            names += String.format("%s, ", c.getCategoryName());
+        }
+        return names;
+    }
+
 }

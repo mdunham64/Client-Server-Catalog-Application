@@ -6,10 +6,16 @@ public class CellPhones extends Electronics{
     private String imei;
     private String operatingSystem;
 
-    CellPhones(String productID, String productName, String brandName, String productDescription, LocalDate dateofIncorporation, int serialNumber, LocalDate warrantyPeriod, String imei, String operatingSystem){
+    public CellPhones(String productID, String productName, String brandName, String productDescription, LocalDate dateofIncorporation,
+               int serialNumber, LocalDate warrantyPeriod, String imei, String operatingSystem){
         super(productID,productName,brandName,productDescription,dateofIncorporation,serialNumber,warrantyPeriod);
         this.imei = imei;
         this.operatingSystem = operatingSystem;
+    }
+    @Override
+    public String getProductDetails(){
+        return String.format("---Cell Phones%s%nIMEI: %s%nOS: %s", super.getProductDetails(), this.getImei(),
+                this.getOperatingSystem());
     }
 
     public String getImei() {

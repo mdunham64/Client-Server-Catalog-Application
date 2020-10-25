@@ -5,11 +5,15 @@ import java.time.LocalDate;
 public class HomeProducts extends Product{
     private String location;
 
-    HomeProducts(String productID, String productName, String brandName, String productDescription, LocalDate dateofIncorporation, String location){
+    public HomeProducts(String productID, String productName, String brandName, String productDescription, LocalDate dateofIncorporation, String location){
         super(productID,productName,brandName,productDescription,dateofIncorporation);
         this.location = location;
     }
 
+    @Override
+    public String getProductDetails(){
+        return String.format("--Home--%n%sLocation: %s", super.getProductDetails(), this.getLocation());
+    }
     public String getLocation() {
         return location;
     }

@@ -24,7 +24,6 @@ public class User {
         this.password = password;
     }
 
-    //TODO : finish this login method
     /*public Socket login(String email, String password){
         //needs finishing
     }*/

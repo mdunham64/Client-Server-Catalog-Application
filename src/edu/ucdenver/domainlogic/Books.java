@@ -7,11 +7,16 @@ public class Books extends Product{
     private LocalDate publicationDate;
     private int numOfPages;
 
-    Books(String productID, String productName, String brandName, String productDescription, LocalDate dateofIncorporation, String authorName, LocalDate publicationDate, int numOfPages){
+    public Books(String productID, String productName, String brandName, String productDescription, LocalDate dateofIncorporation, String authorName, LocalDate publicationDate, int numOfPages){
         super(productID,productName,brandName,productDescription,dateofIncorporation);
         this.authorName = authorName;
         this.publicationDate = publicationDate;
         this.numOfPages = numOfPages;
+    }
+    @Override
+    public String getProductDetails(){
+        return String.format("---Books---%n%sAuthor: %s%nPublication Date: %s%n# of pgs: %s", super.getProductDetails(),
+                this.getAuthorName(), this.getPublicationDate(), this.getNumOfPages());
     }
 
     public String getAuthorName() {

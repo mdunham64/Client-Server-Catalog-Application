@@ -6,10 +6,15 @@ public class Electronics extends Product{
     private int serialNumber;
     private LocalDate warrantyPeriod;
 
-    Electronics(String productID, String productName, String brandName, String productDescription, LocalDate dateofIncorporation,int serialNumber, LocalDate warrantyPeriod){
+    public Electronics(String productID, String productName, String brandName, String productDescription, LocalDate dateofIncorporation,int serialNumber, LocalDate warrantyPeriod){
         super(productID,productName,brandName,productDescription,dateofIncorporation);
         this.serialNumber = serialNumber;
         this.warrantyPeriod = warrantyPeriod;
+    }
+    @Override
+    public String getProductDetails(){
+        return String.format("---Electronics---%n%sSerial #: %d%nWarranty Period: %s", super.getProductDetails(),
+                this.getSerialNumber(), this.getWarrantyPeriod());
     }
 
     public int getSerialNumber() {

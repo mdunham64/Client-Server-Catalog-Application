@@ -4,11 +4,26 @@ import edu.ucdenver.domainlogic.*;
 
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class Admin extends User{
 
-    public Admin(String username, String email, String password){
-        super(username, email, password);
+    //TODO : I need to keep track of valid emails/users
+    private static ArrayList<String> userList = new ArrayList<>();
+
+    public Admin(String username, String email, String password, boolean bool){
+        super(username, email, password, bool);
+    }
+
+
+    //TODO  :   users have valid email,abc@domain.com
+    //      :   it wants a valid domain so check "."
+    public boolean isValidEmail(String s){
+        return true;
+    }
+
+    public void createNewUser(String email, String name, String pass){
+
     }
 
     public void addNewCategory(String categoryName, String categoryID, String categoryDescription)throws IllegalArgumentException{

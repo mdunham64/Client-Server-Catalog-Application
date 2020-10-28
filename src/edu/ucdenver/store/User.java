@@ -6,8 +6,9 @@ import edu.ucdenver.domainlogic.Electronics;
 import edu.ucdenver.domainlogic.Books;
 import edu.ucdenver.domainlogic.CellPhones;
 import edu.ucdenver.domainlogic.Computers;
+import edu.ucdenver.server.Client;
 
-
+import java.lang.reflect.Array;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -15,18 +16,25 @@ public class User {
     private String username;
     private String email;
     private String password;
-    private static ArrayList<Category> categories = new ArrayList<Category>();
-    private static ArrayList<Product> products = new ArrayList<Product>();
+    private boolean isAdmin;
 
-    public User(String username, String email, String password){
-        this. username = username;
+    private Client mySocket;
+
+    private static ArrayList<Category> categories = new ArrayList<>();
+    private static ArrayList<Product> products = new ArrayList<>();
+
+    public User(String username, String email, String password, boolean isAdmin){
+        this.username = username;
         this.email = email;
         this.password = password;
+        this.isAdmin = isAdmin;
     }
 
-    /*public Socket login(String email, String password){
-        //needs finishing
-    }*/
+    //TODO  :   Each user needs a socket, also each needs
+    //      :   to specify ip/port
+    public Client login(String email, String password) {
+        return this.mySocket;
+    }
 
     //Browsing & Searching methods
     //FIXME need to make the searches NOT case sensitive.
@@ -75,6 +83,8 @@ public class User {
         this.email = email;
     }
 
+
+    //FIXME  :  Do we need public password functions?
     public String getPassword() {
         return password;
     }
@@ -83,10 +93,20 @@ public class User {
         this.password = password;
     }
 
+    public boolean isPassValid(String s){
+        return s.length() > 7;
+    }
+
+
     public static ArrayList<Category> getCategories() {
         return categories;
     }
     public static ArrayList<Product> getProducts() {
         return products;
     }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
 }

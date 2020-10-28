@@ -1,5 +1,6 @@
 package edu.ucdenver.application;
 
+import edu.ucdenver.server.Client;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,6 +19,6 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        launch(args);
+
     }
 }

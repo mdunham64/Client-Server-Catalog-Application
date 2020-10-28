@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.TextFlow?>
+
+<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ucdenver.application.Controller">
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+   </rowConstraints>
+   <children>
+      <TabPane prefHeight="327.0" prefWidth="354.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab fx:id="tabAdminConnect" text="Connect to Server">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="260.0" prefWidth="274.0">
+                     <children>
+                        <TextFlow fx:id="txtServerPortErrorMessage" layoutX="77.0" layoutY="14.0" prefHeight="70.0" prefWidth="200.0" AnchorPane.topAnchor="14.0" />
+                        <GridPane layoutX="8.0" layoutY="89.0" prefHeight="198.0" prefWidth="335.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="107.20001220703125" minWidth="10.0" prefWidth="76.800048828125" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="147.199951171875" minWidth="10.0" prefWidth="147.199951171875" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label text="Server" />
+                              <Label text="Port" GridPane.rowIndex="1" />
+                              <PasswordField fx:id="txtAdminServer" GridPane.columnIndex="2" />
+                              <TextField fx:id="txtAdminPort" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                              <Button fx:id="btnConnectAdmin" mnemonicParsing="false" prefHeight="26.0" prefWidth="82.0" text="Connect" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                           </children>
+                        </GridPane>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab fx:id="tabAdminLogin" text="Login">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextFlow fx:id="txtAdminLoginErrorMessage" layoutX="77.0" layoutY="14.0" prefHeight="70.0" prefWidth="206.0" />
+                        <GridPane layoutX="8.0" layoutY="103.0" prefHeight="178.0" prefWidth="339.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="107.4000244140625" minWidth="10.0" prefWidth="55.4000244140625" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="173.79998779296875" minWidth="10.0" prefWidth="170.5999755859375" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Button fx:id="btnLogin" mnemonicParsing="false" prefHeight="26.0" prefWidth="117.0" text="Login" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Label text="Email" />
+                              <PasswordField fx:id="txtAdminPassword" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                              <Label text="Password" GridPane.rowIndex="1" />
+                              <TextField fx:id="txtAdminEmail" GridPane.columnIndex="2" />
+                           </children>
+                        </GridPane>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</GridPane>

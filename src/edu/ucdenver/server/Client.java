@@ -22,8 +22,9 @@ public class Client {
         this.isConnected = false;
     }
 
+
     public Client() {
-        this("127.0.0.1", 10000); //default constructor, use the predefined ip/port we are using.
+        this("localhost", 10001); //default constructor, use the predefined ip/port we are using.
     }
 
     public boolean isConnected() {
@@ -45,6 +46,7 @@ public class Client {
             this.output = null;
             this.serverConnection = null;
             this.isConnected = false;
+
         }
     }
 

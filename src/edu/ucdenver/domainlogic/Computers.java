@@ -6,7 +6,7 @@ public class Computers extends Electronics{
     private String technicalSpecifications;
 
     public Computers(String productID, String productName, String brandName, String productDescription, LocalDate dateofIncorporation,
-              int serialNumber, LocalDate warrantyPeriod, String technicalSpecifications){
+              int serialNumber, int warrantyPeriod, String technicalSpecifications){
         super(productID,productName,brandName,productDescription,dateofIncorporation,serialNumber,warrantyPeriod);
         this.technicalSpecifications = technicalSpecifications;
     }

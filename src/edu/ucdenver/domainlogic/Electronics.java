@@ -4,9 +4,9 @@ import java.time.LocalDate;
 
 public class Electronics extends Product{
     private int serialNumber;
-    private LocalDate warrantyPeriod;
+    private int warrantyPeriod;
 
-    public Electronics(String productID, String productName, String brandName, String productDescription, LocalDate dateofIncorporation,int serialNumber, LocalDate warrantyPeriod){
+    public Electronics(String productID, String productName, String brandName, String productDescription, LocalDate dateofIncorporation,int serialNumber, int warrantyPeriod){
         super(productID,productName,brandName,productDescription,dateofIncorporation);
         this.serialNumber = serialNumber;
         this.warrantyPeriod = warrantyPeriod;
@@ -25,11 +25,11 @@ public class Electronics extends Product{
         this.serialNumber = serialNumber;
     }
 
-    public LocalDate getWarrantyPeriod() {
+    public int getWarrantyPeriod() {
         return warrantyPeriod;
     }
 
-    public void setWarrantyPeriod(LocalDate warrantyPeriod) {
+    public void setWarrantyPeriod(int warrantyPeriod) {
         this.warrantyPeriod = warrantyPeriod;
     }
 }

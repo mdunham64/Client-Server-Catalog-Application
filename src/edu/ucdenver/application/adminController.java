@@ -74,11 +74,13 @@ public class adminController {
     Client client;
 
 
+
     public adminController() {
         client = new Client();
         client.connect();
         Alert alert;
-    }
+}
+
 
     public void AddNewUser(javafx.event.ActionEvent actionEvent) {
         String name = txtNewUserName.getText();

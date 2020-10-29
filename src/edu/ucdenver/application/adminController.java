@@ -78,7 +78,7 @@ public class adminController{
     Client client;
 
 
-    adminController(){
+    public adminController(){
 
     }
 

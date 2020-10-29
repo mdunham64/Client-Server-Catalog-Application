@@ -2,14 +2,14 @@ package edu.ucdenver.application;
 
 
 import edu.ucdenver.server.Client;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.text.TextFlow;
-import javafx.scene.control.TextArea;
 
-public class adminController{
+import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.time.LocalDate;
+
+public class adminController {
     //Variables in Create New User Tab
     public TextField txtNewUserName;
     public TextField txtNewUserEmail;
@@ -71,71 +71,167 @@ public class adminController{
     public Button btnAdminExit;
     public TextFlow textFlowAdminSaveMessage;
 
-
-
-
-    //Not sure if this line is needed
     Client client;
 
 
-    public adminController(){
+
+    public adminController() {
+        client = new Client();
+        client.connect();
+        Alert alert;
+}
+
+
+    public void AddNewUser(javafx.event.ActionEvent actionEvent) {
+        String name = txtNewUserName.getText();
+        String email = txtNewUserEmail.getText();
+        String password = txtNewUserPassword.getText();
+        Alert alert;
+        String cmd = "CNU|" + name + "|" + email + "|" + password;
+
+        if (client.isConnected()) {
+            try {
+                String response = client.sendRequest(cmd);
+                String[] respArgs = response.split("\\|");
+
+                switch (respArgs[0]) {
+                    case "OK":
+                        alert = new Alert(Alert.AlertType.CONFIRMATION, "Action complete: " + respArgs[1], ButtonType.OK);
+                        alert.show();
+                        break;
+                    case "ERR":
+                        alert = new Alert(Alert.AlertType.ERROR, respArgs[1], ButtonType.OK);
+                        alert.show();
+                        break;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                alert = new Alert(Alert.AlertType.ERROR, "Server Response:" + e.getMessage(), ButtonType.OK);
+                alert.show();
+            }
+        } else {
+            alert = new Alert(Alert.AlertType.ERROR, "Client is not connected", ButtonType.OK);
+            alert.show();
+        }
+    }
+
+    public void AddNewProduct(javafx.event.ActionEvent actionEvent) {
+        String productID = txtNewProductID.getText();
+        String productName = txtNewProductName.getText();
+        String brand = txtNewProductBrandName.getText();
+        String productDesc = txtNewProductDescription.getText();
+        LocalDate dateProdAdded = datePickerNewProductDateAdded.getValue();
+        //ADD AREA OF USE ONE HERE TOO SOON
+        String areaofuse = "";
+        String authorName;
+        if(txtNewAuthorName.getText().isEmpty())
+            authorName = "NONE";
+        else
+            authorName = txtNewAuthorName.getText();
+        LocalDate publicationDate;
+        if(datePickerNewPublicationDate.getValue()==null)
+            publicationDate = LocalDate.of(2020,1,1);
+        else
+            publicationDate = datePickerNewPublicationDate.getValue();
+        String numOfPages;
+        if(txtNewNumPages.getText().isEmpty())
+            numOfPages = "NONE";
+        else
+            numOfPages = txtNewNumPages.getText();
+        String serialNumber;
+        if(txtNewSerialNum.getText().isEmpty())
+            serialNumber = "NONE";
+        else
+            serialNumber = txtNewSerialNum.getText();
+        String warrantyperiod;
+        if(txtWarrantyPeriod.getText().isEmpty())
+            warrantyperiod = "NONE";
+        else
+            warrantyperiod = txtWarrantyPeriod.getText();
+        String computerspecs;
+        if(txtNewComputerSpecs.getText().isEmpty())
+            computerspecs = "NONE";
+        else
+            computerspecs = txtNewComputerSpecs.getText();
+        String cellphoneIMEI;
+        if(txtNewCellphoneIMEI.getText().isEmpty())
+            cellphoneIMEI = "NONE";
+        else
+            cellphoneIMEI = txtNewCellphoneIMEI.getText();
+        //ADD CHOICE BOX INFO FOR OS VERSION HERE
+        String os = "";
+        Alert alert;
+        String cmd = "ANP|" + productID + "|" + productName + "|" + brand + "|" + productDesc + "|" + dateProdAdded + "|" + authorName + "|"
+                + publicationDate + "|" + numOfPages + "|" + serialNumber + "|" + warrantyperiod + "|" + computerspecs + "|" + cellphoneIMEI
+                + areaofuse + "|" + os;
+
+        if (client.isConnected()) {
+            try {
+                String response = client.sendRequest(cmd);
+                String[] respArgs = response.split("\\|");
+
+                switch (respArgs[0]) {
+                    case "OK":
+                        alert = new Alert(Alert.AlertType.CONFIRMATION, "Action complete: " + respArgs[1], ButtonType.OK);
+                        alert.show();
+                        break;
+                    case "ERR":
+                        alert = new Alert(Alert.AlertType.ERROR, respArgs[1], ButtonType.OK);
+                        alert.show();
+                        break;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                alert = new Alert(Alert.AlertType.ERROR, "Server Response:" + e.getMessage(), ButtonType.OK);
+                alert.show();
+            }
+        } else {
+            alert = new Alert(Alert.AlertType.ERROR, "Client is not connected", ButtonType.OK);
+            alert.show();
+        }
+    }
+
+    public void DeleteProduct() {
 
     }
 
-
-    public void AddNewUser(){
-
-    }
-
-
-    public void AddNewProduct(){
+    public void RemoveCategoryFromProduct() {
 
     }
 
-    public void DeleteProduct(){
+    public void AddCategoryToProduct() {
 
     }
 
-    public void RemoveCategoryFromProduct(){
+    public void AddNewCategory() {
 
     }
 
-    public void AddCategoryToProduct(){
+    public void DeleteCategory() {
 
     }
 
-    public void AddNewCategory(){
+    public void SetDefaultCategory() {
 
     }
 
-    public void DeleteCategory(){
+    public void GetCustomerOrderReport() {
 
     }
 
-    public void SetDefaultCategory(){
+    public void GetFinalizedOrders() {
 
     }
 
-    public void GetCustomerOrderReport(){
+    public void TerminateServerAndSave() {
 
     }
 
-    public void GetFinalizedOrders(){
+    public void Exit() {
 
     }
-
-    public void TerminateServerAndSave(){
-
-    }
-
-    public void Exit(){
-
-    }
-
-
-
-
-
 
 }
+
+
 

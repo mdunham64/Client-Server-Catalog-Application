@@ -24,7 +24,7 @@ public class Client {
 
 
     public Client() {
-        this("localhost", 24001); //default constructor, use the predefined ip/port we are using.
+        this("localhost", 10001); //default constructor, use the predefined ip/port we are using.
     }
 
     public boolean isConnected() {

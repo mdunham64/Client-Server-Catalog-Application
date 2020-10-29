@@ -73,7 +73,7 @@ public class Admin extends User {
     }
 
     public void addElectronic(String productID, String productName, String brandName, String productDescription,
-                              LocalDate dateofIncorporation, int serialNumber, LocalDate warranty) {
+                              LocalDate dateofIncorporation, int serialNumber, int warranty) {
         if (!searchProduct(productName)) {
             Product newEProduct = new Electronics(productID, productName, brandName, productDescription, dateofIncorporation, serialNumber, warranty);
             productList.add(newEProduct);
@@ -82,7 +82,7 @@ public class Admin extends User {
             System.out.print("Eletronic already exists");
     }
 
-    public void addComputer(String productID, String productName, String brandName, String productDescription, LocalDate dateofIncorporation, int serialNumber, LocalDate warrantyPeriod, String technicalSpecifications) {
+    public void addComputer(String productID, String productName, String brandName, String productDescription, LocalDate dateofIncorporation, int serialNumber, int warrantyPeriod, String technicalSpecifications) {
         if (!searchProduct(productName)) {
             Product newComputer = new Computers(productID, productName, brandName, productDescription, dateofIncorporation,
                     serialNumber, warrantyPeriod, technicalSpecifications);
@@ -94,7 +94,7 @@ public class Admin extends User {
 
 
     public void addCellPhone(String productID, String productName, String brandName, String productDescription, LocalDate dateofIncorporation,
-                             int serialNumber, LocalDate warrantyPeriod, String IMEI, String operatingSystem) {
+                             int serialNumber, int warrantyPeriod, String IMEI, String operatingSystem) {
         if (!searchProduct(productName)) {
             Product newCell = new CellPhones(productID, productName, brandName, productDescription, dateofIncorporation,
                     serialNumber, warrantyPeriod, IMEI, operatingSystem);

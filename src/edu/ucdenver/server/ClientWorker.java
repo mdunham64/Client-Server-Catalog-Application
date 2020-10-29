@@ -1,5 +1,7 @@
 package edu.ucdenver.server;
 
+import edu.ucdenver.domainlogic.*;
+import edu.ucdenver.store.Admin;
 import edu.ucdenver.store.User;
 
 import java.io.BufferedReader;
@@ -15,11 +17,13 @@ public class ClientWorker implements Runnable {
     private BufferedReader input;
     private boolean keepRunningClient;
     private final int id;
+    private User catalog;
 
-    public ClientWorker(Socket connection, int id){
+    public ClientWorker(Socket connection, User catalog, int id){
         this.clientConnection = connection;
         this.keepRunningClient = true;
         this.id = id;
+        this.catalog = catalog;
     }
 
     private void getOutputStream(Socket clientConnection) throws IOException {
@@ -37,20 +41,65 @@ public class ClientWorker implements Runnable {
     private void processClientRequest() throws IOException {
         String clientMessage = this.input.readLine(); //recv from client
         displayMessage("CLIENT SAID>>>" + clientMessage);
-
         String[] arguments = clientMessage.split("\\|"); // this splits the string using | as the delimiter
         String response = ""; //This will bethe response to the server.
 
         try {
             switch (arguments[0]) { //arguments[0] must be the command
                 case "CNU": // create new user
-                    response = "OK|Successfully Added new user.";
-                    //TODO  :   I made this an admin for now. Fourth arg is a boolean. Probably broke it.
+                    response = String.format("OK|Successfully Added new user: %s",clientMessage);
                     User temp = new User(arguments[1],arguments[2],arguments[3], true);
+                    this.catalog.users.add(temp);
                     break;
                 case "LAU": // login a user
                     break;
                 case "ANP": // add new product ADMIN
+                    /*
+                    arg[1] = productID
+                    arg[2] = productName
+                    arg[3] = brandName
+                    arg[4] = productDescription
+                    arg[5] = dateProductAdded
+                    arg[6] = authorname
+                    arg[7] = publicationdate
+                    arg[8] = numOfPages
+                    arg[9] = serialNumber
+                    arg[10] = warrantyPeriod
+                    arg[11] = computerspecs
+                    arg[12] = cellphoneIMEI
+                    arg[13] = areaofuse
+                    arg[14] = os
+                     */
+                    Product placeholder = null;
+                    LocalDate dateProductAdded = null;
+                    LocalDate publicationDate = null;
+                    if(!arguments[5].equals("NONE")) {
+                        String[] dateFields = arguments[5].split("-");
+                        dateProductAdded = LocalDate.of(Integer.parseInt(dateFields[0]), Integer.parseInt(dateFields[1]), Integer.parseInt(dateFields[2]));
+                    }
+                    if(!arguments[7].equals("NONE")) {
+                        String[] dateFields = arguments[7].split("-");
+                        publicationDate = LocalDate.of(Integer.parseInt(dateFields[0]), Integer.parseInt(dateFields[1]), Integer.parseInt(dateFields[2]));
+                    }
+
+                    if (arguments[6].equals("NONE") && arguments[9].equals("NONE")){
+                        placeholder = new HomeProducts(arguments[1],arguments[2],arguments[3],arguments[4],dateProductAdded,arguments[13]);
+                        this.catalog.products.add(placeholder);
+                    }
+                    if (arguments[9].equals("NONE") && !arguments[6].equals("NONE")){
+                        placeholder = new Books(arguments[1],arguments[2],arguments[3],arguments[4],dateProductAdded, arguments[6],publicationDate,Integer.parseInt(arguments[8]));
+                        this.catalog.products.add(placeholder);
+                    }
+                    if (!arguments[9].equals("NONE") && arguments[6].equals("NONE")
+                     && arguments[12].equals("NONE")){
+                        placeholder = new Computers(arguments[1],arguments[2],arguments[3],arguments[4],dateProductAdded,Integer.parseInt(arguments[9]),Integer.parseInt(arguments[10]),arguments[11]);
+                        this.catalog.products.add(placeholder);
+                    }
+                    if (!arguments[9].equals("NONE") && arguments[6].equals("NONE") && !arguments[12].equals("NONE")){
+                        placeholder = new CellPhones(arguments[1],arguments[2],arguments[3],arguments[4],dateProductAdded,Integer.parseInt(arguments[9]),Integer.parseInt(arguments[10]),arguments[12],arguments[14]);
+                        this.catalog.products.add(placeholder);
+                    }
+                    response = String.format("OK|Successfully added product: %s", placeholder.getProductName());
                     break;
                 case "RP": // remove product ADMIN
                     break;
@@ -115,7 +164,7 @@ public class ClientWorker implements Runnable {
             getOutputStream(clientConnection);
             getInputStream(clientConnection);
 
-            sendRequest("Connected to Library Java Server");
+            sendRequest("Connected to Catalog Java Server");
 
             while (this.keepRunningClient)
                 processClientRequest();

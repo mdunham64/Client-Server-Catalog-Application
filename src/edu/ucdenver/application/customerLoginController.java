@@ -12,7 +12,12 @@ public class customerLoginController {
     public Button btnAttemptConnection;
     
     Client client;
-    
+
+
+    public customerLoginController(){
+
+    }
+
     public void ConnectUser(ActionEvent actionEvent){
         
     }

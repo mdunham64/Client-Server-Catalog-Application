@@ -45,7 +45,8 @@ public class ClientWorker implements Runnable {
             switch (arguments[0]) { //arguments[0] must be the command
                 case "CNU": // create new user
                     response = "OK|Successfully Added new user.";
-                    User temp = new User(arguments[1],arguments[2],arguments[3]);
+                    //TODO  :   I made this an admin for now. Fourth arg is a boolean. Probably broke it.
+                    User temp = new User(arguments[1],arguments[2],arguments[3], true);
                     break;
                 case "LAU": // login a user
                     break;
@@ -102,7 +103,7 @@ public class ClientWorker implements Runnable {
         try {this.clientConnection.close();} catch (IOException|NullPointerException e){e.printStackTrace();}
     }
 
-    public void sendRequest(String request) throws IOException { //send message and returns the server response.
+    public void sendRequest(String request) { //send message and returns the server response.
         System.out.println("SERVER >> "+ request);
         this.output.println(request);
     }

@@ -1,6 +1,8 @@
 package edu.ucdenver.server;
 
 import edu.ucdenver.domainlogic.Product;
+import edu.ucdenver.store.Admin;
+import edu.ucdenver.store.User;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -26,7 +28,7 @@ public class Server implements Runnable {
     }
 
     public Server(){
-        this(10000,10);
+        this(10001,10);
     }
 
     private Socket waitForClientConnection() throws IOException {
@@ -47,6 +49,7 @@ public class Server implements Runnable {
 
             // ADD IN CODE FOR LOADING CATALOG FROM FILE HERE
 
+            User admin = new Admin("admin","admin@ucdenver.edu","",true);
             while(true) {
                 try {
                     Socket clientConnection = this.waitForClientConnection();
@@ -54,7 +57,7 @@ public class Server implements Runnable {
                     //if loading from file, load the admin user and populate the catalog
                     //else create default admin with email of admin@ucdenver.edu and pass blank
                     //attach object of Admin for saved information
-                    ClientWorker cw = new ClientWorker(clientConnection,this.connectionCounter); // add parameters later
+                    ClientWorker cw = new ClientWorker(clientConnection, admin, this.connectionCounter); // add parameters later
 
                     executorService.execute(cw);
                 }

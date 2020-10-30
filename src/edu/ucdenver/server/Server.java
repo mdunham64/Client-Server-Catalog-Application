@@ -48,7 +48,8 @@ public class Server implements Runnable {
 
             // ADD IN CODE FOR LOADING CATALOG FROM FILE HERE
 
-            User admin = new Admin("admin","admin@ucdenver.edu","",true);
+            User admin = new Admin("admin","admin@ucdenver.edu","password",true);
+            User.users.add(admin);
             while(true) {
                 try {
                     Socket clientConnection = this.waitForClientConnection();

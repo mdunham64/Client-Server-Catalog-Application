@@ -155,6 +155,24 @@ public class ClientWorker implements Runnable {
                     break;
                 case "T": // terminate client
                     break;
+                case "TEST":
+                    response = "OK|Successfully connected to Java Catalog.";
+                    break;
+                case "AL":
+                    for (User u : User.users){
+                        if(u.getEmail().equalsIgnoreCase(arguments[1])){
+                            if(u.getPassword().equalsIgnoreCase(arguments[2])){
+                                response = "OK|Successfully logged into Admin Application.";
+                            }
+                            else{
+                                response = "ERR|Incorrect password.";
+                            }
+                        }
+                        else{
+                            response = "ERR|Incorrect email.";
+                        }
+                    }
+                    break;
                 default:
                     response = "ERR| Unknown Command.";
             }

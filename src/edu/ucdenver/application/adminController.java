@@ -4,10 +4,11 @@ package edu.ucdenver.application;
 import edu.ucdenver.domainlogic.Category;
 import edu.ucdenver.server.Client;
 import edu.ucdenver.store.User;
+import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.text.TextFlow;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.time.LocalDate;
 
@@ -238,6 +239,9 @@ public class adminController {
 
     }
 
+    public void login(ActionEvent actionEvent) {
+
+    }
 }
 
 

@@ -1,8 +1,7 @@
 package edu.ucdenver.server;
 
 import edu.ucdenver.domainlogic.*;
-import edu.ucdenver.store.Admin;
-import edu.ucdenver.store.User;
+import edu.ucdenver.store.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -49,7 +48,7 @@ public class ClientWorker implements Runnable {
                 case "CNU": // create new user
                     response = String.format("OK|Successfully Added new user: %s",clientMessage);
                     User temp = new User(arguments[1],arguments[2],arguments[3], true);
-                    this.catalog.users.add(temp);
+                    User.users.add(temp);
                     break;
                 case "LAU": // login a user
                     break;
@@ -84,34 +83,55 @@ public class ClientWorker implements Runnable {
 
                     if (arguments[6].equals("NONE") && arguments[9].equals("NONE")){
                         placeholder = new HomeProducts(arguments[1],arguments[2],arguments[3],arguments[4],dateProductAdded,arguments[13]);
-                        this.catalog.products.add(placeholder);
+                        User.products.add(placeholder);
                     }
                     if (arguments[9].equals("NONE") && !arguments[6].equals("NONE")){
                         placeholder = new Books(arguments[1],arguments[2],arguments[3],arguments[4],dateProductAdded, arguments[6],publicationDate,Integer.parseInt(arguments[8]));
-                        this.catalog.products.add(placeholder);
+                        User.products.add(placeholder);
                     }
                     if (!arguments[9].equals("NONE") && arguments[6].equals("NONE")
                      && arguments[12].equals("NONE")){
                         placeholder = new Computers(arguments[1],arguments[2],arguments[3],arguments[4],dateProductAdded,Integer.parseInt(arguments[9]),Integer.parseInt(arguments[10]),arguments[11]);
-                        this.catalog.products.add(placeholder);
+                        User.products.add(placeholder);
                     }
                     if (!arguments[9].equals("NONE") && arguments[6].equals("NONE") && !arguments[12].equals("NONE")){
                         placeholder = new CellPhones(arguments[1],arguments[2],arguments[3],arguments[4],dateProductAdded,Integer.parseInt(arguments[9]),Integer.parseInt(arguments[10]),arguments[12],arguments[14]);
-                        this.catalog.products.add(placeholder);
+                        User.products.add(placeholder);
                     }
                     response = String.format("OK|Successfully added product: %s", placeholder.getProductName());
                     break;
                 case "RP": // remove product ADMIN
+                    for (Product p : User.products){
+                        if(arguments[1].equalsIgnoreCase(p.getProductID())){
+                            User.products.remove(p);
+                            response = String.format("OK|Successfully deleted product: %s",p.getProductName());
+                        }
+                        else
+                            response = String.format("ERR|The product is not in the catalog.");
+                    }
                     break;
                 case "ACP": // add category to product ADMIN
                     break;
                 case "DCP": // delete category to product ADMIN
                     break;
                 case "ANC": // add new category ADMIN
+                    Category temp1 = new Category(arguments[1],arguments[2],arguments[3]);
+                    User.categories.add(temp1);
+                    response = String.format("OK|Successfully added Category: %s", temp1.getCategoryName());
                     break;
                 case "SDC": // set default category ADMIN
+                    Category.setDefaultvalues(arguments[1],arguments[2],arguments[3]);
+                    response = String.format("OK|Successfully set the default category to: %s", Category.defaultName);
                     break;
                 case "DC": // delete category ADMIN
+                    for (Category c : User.categories){
+                        if(arguments[1].equalsIgnoreCase(c.getCategoryName())){
+                            User.categories.remove(c);
+                            response = String.format("OK|Successfully deleted category: %s", c.getCategoryName());
+                        }
+                        else
+                            response = String.format("ERR|The category is not in the catalog.");
+                    }
                     break;
                 case "SEARCH": // search the product list for keyword CUSTOMER
                     break;

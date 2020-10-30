@@ -1,7 +1,9 @@
 package edu.ucdenver.application;
 
 
+import edu.ucdenver.domainlogic.Category;
 import edu.ucdenver.server.Client;
+import edu.ucdenver.store.User;
 import javafx.scene.control.*;
 import javafx.scene.text.TextFlow;
 
@@ -23,7 +25,7 @@ public class adminController {
     public TextField txtNewProductBrandName;
     public TextArea txtNewProductDescription;
     public DatePicker datePickerNewProductDateAdded;
-    public ChoiceBox choiceBoxNewProductHomeArea;
+    public TextField txtNewProductAreaofUse;
     public TextField txtNewAuthorName;
     public DatePicker datePickerNewPublicationDate;
     public TextField txtNewNumPages;
@@ -31,7 +33,7 @@ public class adminController {
     public TextField txtWarrantyPeriod;
     public TextField txtNewComputerSpecs;
     public TextField txtNewCellphoneIMEI;
-    public ChoiceBox choiceBoxCellphoneIOS;
+    public TextField txtCellphoneOS;
     public Button btnAddNewProduct;
     public TextFlow txtAddNewProductMessage;
     //Delete Product
@@ -70,26 +72,25 @@ public class adminController {
     public Button btnAdminTerminateServerAndSave;
     public Button btnAdminExit;
     public TextFlow textFlowAdminSaveMessage;
+    public TextField txtDeleteCategory;
+    public TextField txtSetDefaultCategory;
+    public TextField txtAddnewcategoryid;
+    public TextField txtaddnewcategorydescription;
+    public TextField txtsetdefaultcatid;
+    public TextField txtsetdefaultcatdesc;
+
 
     Client client;
-
 
 
     public adminController() {
         client = new Client();
         client.connect();
+    }
+
+    public void showAlert(String cmd){
         Alert alert;
-}
-
-
-    public void AddNewUser(javafx.event.ActionEvent actionEvent) {
-        String name = txtNewUserName.getText();
-        String email = txtNewUserEmail.getText();
-        String password = txtNewUserPassword.getText();
-        Alert alert;
-        String cmd = "CNU|" + name + "|" + email + "|" + password;
-
-        if (client.isConnected()) {
+        if(client.isConnected()){
             try {
                 String response = client.sendRequest(cmd);
                 String[] respArgs = response.split("\\|");
@@ -114,6 +115,14 @@ public class adminController {
             alert.show();
         }
     }
+    public void AddNewUser(javafx.event.ActionEvent actionEvent) {
+        String name = txtNewUserName.getText();
+        String email = txtNewUserEmail.getText();
+        String password = txtNewUserPassword.getText();
+        String cmd = "CNU|" + name + "|" + email + "|" + password;
+
+        showAlert(cmd);
+    }
 
     public void AddNewProduct(javafx.event.ActionEvent actionEvent) {
         String productID = txtNewProductID.getText();
@@ -121,8 +130,11 @@ public class adminController {
         String brand = txtNewProductBrandName.getText();
         String productDesc = txtNewProductDescription.getText();
         LocalDate dateProdAdded = datePickerNewProductDateAdded.getValue();
-        //ADD AREA OF USE ONE HERE TOO SOON
-        String areaofuse = "";
+        String areaofuse;
+        if(txtNewProductAreaofUse.getText().isEmpty())
+            areaofuse = "NONE";
+        else
+            areaofuse = txtNewProductAreaofUse.getText();
         String authorName;
         if(txtNewAuthorName.getText().isEmpty())
             authorName = "NONE";
@@ -158,41 +170,23 @@ public class adminController {
             cellphoneIMEI = "NONE";
         else
             cellphoneIMEI = txtNewCellphoneIMEI.getText();
-        //ADD CHOICE BOX INFO FOR OS VERSION HERE
-        String os = "";
-        Alert alert;
+        String os;
+        if(txtCellphoneOS.getText().isEmpty())
+            os = "NONE";
+        else
+            os = txtCellphoneOS.getText();
         String cmd = "ANP|" + productID + "|" + productName + "|" + brand + "|" + productDesc + "|" + dateProdAdded + "|" + authorName + "|"
                 + publicationDate + "|" + numOfPages + "|" + serialNumber + "|" + warrantyperiod + "|" + computerspecs + "|" + cellphoneIMEI
-                + areaofuse + "|" + os;
+                + "|" + areaofuse + "|" + os;
 
-        if (client.isConnected()) {
-            try {
-                String response = client.sendRequest(cmd);
-                String[] respArgs = response.split("\\|");
-
-                switch (respArgs[0]) {
-                    case "OK":
-                        alert = new Alert(Alert.AlertType.CONFIRMATION, "Action complete: " + respArgs[1], ButtonType.OK);
-                        alert.show();
-                        break;
-                    case "ERR":
-                        alert = new Alert(Alert.AlertType.ERROR, respArgs[1], ButtonType.OK);
-                        alert.show();
-                        break;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                alert = new Alert(Alert.AlertType.ERROR, "Server Response:" + e.getMessage(), ButtonType.OK);
-                alert.show();
-            }
-        } else {
-            alert = new Alert(Alert.AlertType.ERROR, "Client is not connected", ButtonType.OK);
-            alert.show();
-        }
+        showAlert(cmd);
     }
 
     public void DeleteProduct() {
+        String productID = txtDeleteProductID.getText();
+        String cmd = "RP|" + productID;
 
+        showAlert(cmd);
     }
 
     public void RemoveCategoryFromProduct() {
@@ -204,15 +198,28 @@ public class adminController {
     }
 
     public void AddNewCategory() {
+        String anewcategory = txtAddNewCategory.getText();
+        String anewcategoryid = txtAddnewcategoryid.getText();
+        String anewcategorydescp = txtaddnewcategorydescription.getText();
+        String cmd = "ANC|" + anewcategory + "|" + anewcategoryid + "|" + anewcategorydescp;
 
+        showAlert(cmd);
     }
 
     public void DeleteCategory() {
+        String deletecategory = txtDeleteCategory.getText();
+        String cmd = "DC|" + deletecategory;
 
+        showAlert(cmd);
     }
 
     public void SetDefaultCategory() {
+        String setdefaultcategory = txtSetDefaultCategory.getText();
+        String setdefaultcatid = txtsetdefaultcatid.getText();
+        String setdefaultcatdescp = txtsetdefaultcatdesc.getText();
+        String cmd = "SDC|" + setdefaultcategory + "|" + setdefaultcatid + "|" + setdefaultcatdescp;
 
+        showAlert(cmd);
     }
 
     public void GetCustomerOrderReport() {

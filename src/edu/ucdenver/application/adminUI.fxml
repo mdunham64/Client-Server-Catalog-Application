@@ -91,7 +91,7 @@
                                                             <children>
                                                                 <Label text="Product ID" />
                                                                 <TextField fx:id="txtDeleteProductID" GridPane.columnIndex="1" />
-                                                                <Button fx:id="btnDeleteProduct" mnemonicParsing="false" text="Delete Product" GridPane.rowIndex="1" />
+                                                                <Button fx:id="btnDeleteProduct" mnemonicParsing="false" onAction="#DeleteProduct" text="Delete Product" GridPane.rowIndex="1" />
                                                                 <TextFlow fx:id="txtDeleteProductMessage" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                             </children>
                                                         </GridPane>
@@ -167,7 +167,6 @@
                                                                         <Label text="Date Product Added" GridPane.rowIndex="5" />
                                                                         <Label text="For home products only:" GridPane.rowIndex="6" />
                                                                         <Label text="Area of Use in Home" GridPane.rowIndex="7" />
-                                                                        <ChoiceBox fx:id="choiceBoxNewProductHomeArea" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                                                                         <DatePicker fx:id="datePickerNewProductDateAdded" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                                                         <TextArea fx:id="txtNewProductDescription" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                                                         <TextField fx:id="txtNewProductBrandName" GridPane.columnIndex="1" GridPane.rowIndex="3" />
@@ -186,13 +185,14 @@
                                                                         <TextField fx:id="txtNewSerialNum" GridPane.columnIndex="1" GridPane.rowIndex="13" />
                                                                         <TextField fx:id="txtNewComputerSpecs" GridPane.columnIndex="1" GridPane.rowIndex="15" />
                                                                         <TextField fx:id="txtNewCellphoneIMEI" GridPane.columnIndex="1" GridPane.rowIndex="16" />
-                                                                        <ChoiceBox fx:id="choiceBoxCellphoneIOS" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="17" />
                                                                         <TextField fx:id="txtNewProductID" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                                         <TextField fx:id="txtNewAuthorName" GridPane.columnIndex="1" GridPane.rowIndex="9" />
                                                                         <TextField fx:id="txtNewNumPages" GridPane.columnIndex="1" GridPane.rowIndex="11" />
                                                                         <TextField fx:id="txtWarrantyPeriod" GridPane.columnIndex="1" GridPane.rowIndex="14" />
                                                                         <Button fx:id="btnAddNewProduct" mnemonicParsing="false" onAction="#AddNewProduct" text="Add Product" GridPane.rowIndex="18" />
                                                                         <TextFlow fx:id="txtAddNewProductMessage" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="18" />
+                                                      <TextField fx:id="txtNewProductAreaofUse" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                                      <TextField fx:id="txtCellphoneOS" GridPane.columnIndex="1" GridPane.rowIndex="17" />
                                                                     </children>
                                                                 </GridPane>
                                                             </content>
@@ -213,27 +213,37 @@
                             <children>
                                 <GridPane prefHeight="521.6" prefWidth="704.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                     </columnConstraints>
                                     <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="392.0" minHeight="0.0" prefHeight="57.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="392.0" minHeight="10.0" prefHeight="56.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="392.0" minHeight="10.0" prefHeight="58.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="431.0" minHeight="0.0" prefHeight="152.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="460.0" minHeight="0.0" prefHeight="64.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="460.0" minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="460.0" minHeight="10.0" prefHeight="66.0" vgrow="SOMETIMES" />
                                     </rowConstraints>
                                     <children>
-                                        <Button fx:id="btnAddNewCategory" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Add Category" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                        <Button fx:id="btnDeleteCategory" mnemonicParsing="false" text="Delete Category" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                        <Button fx:id="btnSetDefaultCategory" mnemonicParsing="false" text="Set Default Category" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                        <TextField fx:id="txtAddNewCategory" maxWidth="200.0" minWidth="40.0" prefWidth="40.0" GridPane.rowIndex="1" />
-                                        <ChoiceBox fx:id="choiceBoxCategoryListDelete" prefWidth="150.0" GridPane.rowIndex="3" />
-                                        <ChoiceBox fx:id="choiceBoxCategoryListDefault" prefWidth="150.0" GridPane.rowIndex="5" />
-                                        <TextFlow fx:id="textFlowAddCategoryMessage" prefHeight="200.0" prefWidth="200.0" />
-                                        <TextFlow fx:id="textFlowDeleteCategoryMessage" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" />
-                                        <TextFlow fx:id="textFlowSetDefaultCategoryMessage" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4" />
+                                        <Button fx:id="btnAddNewCategory" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#AddNewCategory" text="Add Category" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                        <Button fx:id="btnDeleteCategory" mnemonicParsing="false" onAction="#DeleteCategory" text="Delete Category" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                        <Button fx:id="btnSetDefaultCategory" mnemonicParsing="false" onAction="#SetDefaultCategory" text="Set Default Category" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                                        <TextField fx:id="txtAddNewCategory" maxWidth="235.0" minWidth="40.0" prefHeight="25.0" prefWidth="235.0" GridPane.columnIndex="1" />
+                              <TextField fx:id="txtDeleteCategory" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <TextField fx:id="txtSetDefaultCategory" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <Label prefHeight="17.0" prefWidth="92.0" text="Category Name" GridPane.halignment="CENTER" />
+                              <Label text="Category ID" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                              <Label text="Category Description" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                              <TextField fx:id="txtAddnewcategoryid" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <TextField fx:id="txtaddnewcategorydescription" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Label text="Category Name" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                              <Label text="Category Name" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+                              <Label text="Category ID" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                              <Label text="Category Description" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+                              <TextField fx:id="txtsetdefaultcatid" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <TextField fx:id="txtsetdefaultcatdesc" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                     </children>
                                 </GridPane>
                             </children>

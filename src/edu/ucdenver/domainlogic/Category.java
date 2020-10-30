@@ -6,9 +6,10 @@ import java.util.ArrayList;
 public class Category {
     private String categoryName;
     private String categoryID;
-    private String categoryDescription;
-    private String defaultName = "home";
-    private String defaultID = "12345";
+    public String categoryDescription;
+    public static String defaultName = "home";
+    public static String defaultID = "12345";
+    public static String defaultcategoryDescription = "NONE";
     private ArrayList<Product> products = new ArrayList<Product>();
 
 
@@ -25,7 +26,7 @@ public class Category {
     public Category(){
         this.categoryName = defaultName;
         this.categoryID = defaultID;
-        this.categoryDescription = "Description for this product is empty\n";
+        this.categoryDescription = defaultcategoryDescription;
     }
     public String getProductNames(){
         String names= "";
@@ -72,6 +73,9 @@ public class Category {
     public void setProducts(ArrayList<Product> products) {
         this.products = products;
     }
-
-
+    public static void setDefaultvalues(String catname, String catid, String catDesc){
+        defaultName = catname;
+        defaultID = catid;
+        defaultcategoryDescription = catDesc;
+    }
 }

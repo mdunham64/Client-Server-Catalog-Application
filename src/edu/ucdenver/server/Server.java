@@ -17,7 +17,6 @@ public class Server implements Runnable {
     private int connectionCounter; // keep track of how many clients are connected.
     private ServerSocket serverSocket;
     private boolean keepRunningClient;
-    private static ArrayList<Product> products = new ArrayList<Product>();
 
 
     public Server(int port, int backlog){

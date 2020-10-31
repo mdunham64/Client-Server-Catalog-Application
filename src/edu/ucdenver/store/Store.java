@@ -14,7 +14,7 @@ public class Store implements Serializable {
     private ArrayList<Product> productList = new ArrayList<>();
     private ArrayList<Customer> customers = new ArrayList<>();
     private ArrayList<Admin> admins = new ArrayList<>();
-    private ArrayList<Order> orders = new ArrayList<>();
+    private ArrayList<Order> finalizedOrders = new ArrayList<>();
     private static int orderNumber = 1234567;
 
     public Store(){
@@ -24,7 +24,7 @@ public class Store implements Serializable {
         this.categories.add(new Category("HOME", "000", "Description"));
         this.productList.add(new HomeProducts("000", "sample name", "test", "sample description",
                 LocalDate.of(2020, 10, 30), "bathroom"));
-        this.productList.add(new HomeProducts("111", "sample name1", "test1", "sample description1",
+        this.productList.add(new HomeProducts("111", "sample name1", "test1", "test",
                 LocalDate.of(2020, 10, 30), "bathroom1"));
     }
 
@@ -47,7 +47,27 @@ public class Store implements Serializable {
             if (temp.getProductName().toLowerCase().equals(prodName.toLowerCase())) {
                 return true;
             }
-        }return false;
+        }
+        return false;
+    }
+
+    public ArrayList<Product> searchByTerm(String searchTerm){
+        ArrayList<Product> temp = new ArrayList<>();
+        for(Product p : this.productList){
+            if(p.getProductName().toLowerCase().contains(searchTerm.toLowerCase())){
+                temp.add(p);
+                continue;
+            }
+            else if(p.getProductDescription().toLowerCase().contains(searchTerm.toLowerCase())){
+                //checks to see if the productID matches one in the temp list, dont add
+                temp.add(p);
+                continue;
+            }
+        }
+        if(temp.size() == 0){
+            System.out.print("No Results"); // in the UI this should be an alert
+        }
+        return temp;
     }
 
     public void addHomeProduct(String productID, String productName, String brandName, String productDescription, LocalDate dateofIncorporation, String location) {
@@ -188,6 +208,25 @@ public class Store implements Serializable {
             }
     }
 
+    public void finalizeOrder(Customer c, Order o){
+        //set a unique order number
+
+        o.setOrderNumber(orderNumber);
+        orderNumber++;
+        //set email
+        o.setCustEmail(c.getEmail());
+        //set status
+        o.setStatus("Final");
+        //set the date of the order
+        o.setFinalizedDate(LocalDate.now());
+        //add to finalizedOrders list
+        this.finalizedOrders.add(o);
+        //for testing, delete later
+        for(Order order123 : finalizedOrders){
+            System.out.println(order123.getOrderNumber());
+        }
+    }
+
     //Getters & Setters
     public ArrayList<Category> getCategories() {
         return categories;
@@ -221,11 +260,20 @@ public class Store implements Serializable {
         this.admins = admins;
     }
 
-    public ArrayList<Order> getOrders() {
-        return orders;
+    public ArrayList<Order> getfinalizedOrders() {
+        return finalizedOrders;
     }
 
-    public void setOrders(ArrayList<Order> orders) {
-        this.orders = orders;
+    public void setfinalizedOrders(ArrayList<Order> orders) {
+        this.finalizedOrders = finalizedOrders;
+    }
+    public ArrayList<Order> getFinalOrdersByEmail(String email){
+        ArrayList<Order> temp = new ArrayList<>();
+        for(Order o : finalizedOrders){
+            if(o.getCustEmail().equalsIgnoreCase(email)){
+                temp.add(o);
+            }
+        }
+        return temp;
     }
 }

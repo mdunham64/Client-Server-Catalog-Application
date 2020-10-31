@@ -11,8 +11,9 @@ public class Order {
     private int orderNumber;
     private String status;
     private LocalDate finalizedDate; //made when finalized of order
-
     private ArrayList<Product> orderList;
+    private String custEmail;
+
 
     Order(String customerID){
         this.orderNumber = customerID.hashCode();//hash their id for unique order numbers
@@ -53,6 +54,8 @@ public class Order {
     }
 
     public void removeProductFromOrder(Product removeThis){
+        //FIXME : I dont think the compiler likes this try/catch. It works but when you run it, the console
+        // blows up
         for (Product p: orderList){
             try{
                 orderList.remove(removeThis);
@@ -77,5 +80,34 @@ public class Order {
                 return true;
             }
         }return false;
+    }
+
+    public void setOrderNumber(int orderNumber) {
+        this.orderNumber = orderNumber;
+    }
+
+    public void setFinalizedDate(LocalDate finalizedDate) {
+        this.finalizedDate = finalizedDate;
+    }
+
+    public void setCustEmail(String custEmail) {
+        this.custEmail = custEmail;
+    }
+
+    public String getCustEmail() {
+        return custEmail;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString(){
+    return String.format("%d", this.getOrderNumber());
     }
 }

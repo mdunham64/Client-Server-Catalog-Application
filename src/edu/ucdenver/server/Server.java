@@ -61,7 +61,7 @@ public class Server implements Runnable {
                     //if loading from file, load the admin user and populate the catalog
                     //else create default admin with email of admin@ucdenver.edu and pass blank
                     //attach object of Admin for saved information
-                    ClientWorker cw = new ClientWorker(clientConnection, admin, this.connectionCounter); // add parameters later
+                    ClientWorker cw = new ClientWorker(clientConnection, this.connectionCounter); // add parameters later
 
                     executorService.execute(cw);
                 }

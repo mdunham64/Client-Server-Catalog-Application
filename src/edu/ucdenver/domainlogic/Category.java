@@ -78,4 +78,9 @@ public class Category {
         defaultID = catid;
         defaultcategoryDescription = catDesc;
     }
+
+    @Override
+    public String toString(){
+        return String.format("%s", this.getCategoryName());
+    }
 }

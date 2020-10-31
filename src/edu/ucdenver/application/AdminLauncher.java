@@ -30,7 +30,6 @@ public class AdminLauncher extends Application {
         newStage.showAndWait();
     }
 
-
     public static void main(String[] args) {
         launch(args);
     }

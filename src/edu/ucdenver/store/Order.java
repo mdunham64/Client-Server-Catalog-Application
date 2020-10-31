@@ -14,14 +14,11 @@ public class Order {
 
     private ArrayList<Product> orderList;
 
-
-
     Order(String customerID){
         this.orderNumber = customerID.hashCode();//hash their id for unique order numbers
         this.status = "in process";
         orderList = new ArrayList<>();
     }
-
 
     public int getOrderNumber() {
         return orderNumber;
@@ -70,4 +67,15 @@ public class Order {
         this.finalizedDate = LocalDate.now();
     }
 
+    public ArrayList<Product> getOrderList() {
+        return orderList;
+    }
+
+    public boolean searchForProduct(Product p){
+        for (Product temp : orderList) {
+            if (temp.getProductName().toLowerCase().equals(p.getProductName().toLowerCase())) {
+                return true;
+            }
+        }return false;
+    }
 }

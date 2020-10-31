@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.time.LocalDate;
-
+import java.time.LocalDate;
 public class ClientWorker implements Runnable {
     private final Socket clientConnection;
     private PrintWriter output;
@@ -17,6 +17,7 @@ public class ClientWorker implements Runnable {
     private boolean keepRunningClient;
     private final int id;
     private User catalog;
+
 
     public ClientWorker(Socket connection, User catalog, int id){
         this.clientConnection = connection;

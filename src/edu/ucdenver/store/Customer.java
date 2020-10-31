@@ -9,5 +9,15 @@ public class Customer extends User{
         this.order = new Order(username);
     }
 
+    public void clearOrder(){
+        order.getOrderList().clear();
+    }
 
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 }

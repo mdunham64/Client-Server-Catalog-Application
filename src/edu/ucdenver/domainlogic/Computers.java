@@ -9,6 +9,8 @@ public class Computers extends Electronics{
               int serialNumber, int warrantyPeriod, String technicalSpecifications){
         super(productID,productName,brandName,productDescription,dateofIncorporation,serialNumber,warrantyPeriod);
         this.technicalSpecifications = technicalSpecifications;
+        this.addCategory("COMPUTERS", "126", "COMPUTER Products");
+
     }
 
     @Override

@@ -1,6 +1,7 @@
 package edu.ucdenver.domainlogic;
 
 import com.sun.xml.internal.bind.v2.TODO;
+import edu.ucdenver.store.User;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,8 +12,9 @@ public abstract class Product {
     private String brandName;
     private String productDescription;
     private LocalDate dateofIncorporation;
+    private String productCategory;
     //All products can have one or more catgories. The following array list allows us to store many cats for each product
-    private ArrayList<Category> categories = new ArrayList<Category>();
+    public ArrayList<Category> categories = new ArrayList<Category>();
 
 
     Product(String productID, String productName, String brandName, String productDescription, LocalDate dateofIncorporation){
@@ -75,13 +77,22 @@ public abstract class Product {
         return categories;
     }
 
+    public void addCategory(String name, String id, String desc){
+       this.categories.add(new Category(name, id, desc));
+    }
+
     //this function returns the names of the categories the prod belongs to
     public String getCategoryNames(){
+
         String names= "";
         for(Category c : categories){
             names += String.format("%s, ", c.getCategoryName());
         }
         return names;
     }
-
+    @Override
+    public String toString(){
+        return String.format("%s", this.getProductName());
+    }
 }
+

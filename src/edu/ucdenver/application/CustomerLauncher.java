@@ -17,7 +17,7 @@ public class CustomerLauncher extends Application {
 
         Parent root1 = FXMLLoader.load(getClass().getResource("catalogUI.fxml"));
         primaryStage.setTitle("Customer Server Connection");
-        primaryStage.setScene(new Scene(root1, 720, 480));
+        primaryStage.setScene(new Scene(root1, 1000, 800));
         showSecondaryStage();
         primaryStage.show();
     }
@@ -26,7 +26,7 @@ public class CustomerLauncher extends Application {
         Stage newStage = new Stage();
         Parent root2 = FXMLLoader.load(getClass().getResource("customerLoginUI.fxml"));
         newStage.setTitle("Customer Application");
-        newStage.setScene(new Scene(root2,720,480));
+        newStage.setScene(new Scene(root2,720,400));
         newStage.showAndWait();
     }
 

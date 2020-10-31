@@ -9,20 +9,24 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.time.LocalDate;
-
+import java.time.LocalDate;
 public class ClientWorker implements Runnable {
     private final Socket clientConnection;
     private PrintWriter output;
     private BufferedReader input;
     private boolean keepRunningClient;
     private final int id;
-    private User catalog;
 
-    public ClientWorker(Socket connection, User catalog, int id){
+    // FIXME : these are probably in the wrong spot
+    private Customer custUser = new Customer("default", "email", "password");
+    private Store store = new Store();
+
+
+    public ClientWorker(Socket connection, int id){
         this.clientConnection = connection;
         this.keepRunningClient = true;
         this.id = id;
-        this.catalog = catalog;
+
     }
 
     private void getOutputStream(Socket clientConnection) throws IOException {
@@ -142,6 +146,13 @@ public class ClientWorker implements Runnable {
                 case "NCO": // new customer order CUSTOMER
                     break;
                 case "APO": // add product to order CUSTOMER
+                    String theProd = arguments[1];
+                    for(Product p : this.store.getProductList()){
+                        if(p.getProductID().equalsIgnoreCase(theProd)){
+                            this.custUser.getOrder().getOrderList().add(p);
+                            response = String.format("OK|Successfully added %s to the order", p.getProductName());
+                        }
+                    }
                     break;
                 case "RPO": // remove product from order CUSTOMER
                     break;

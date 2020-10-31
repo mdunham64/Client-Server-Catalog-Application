@@ -10,6 +10,8 @@ public class Electronics extends Product{
         super(productID,productName,brandName,productDescription,dateofIncorporation);
         this.serialNumber = serialNumber;
         this.warrantyPeriod = warrantyPeriod;
+        this.addCategory("ELECTRONICS", "127", "ELECTRONIC Products");
+
     }
     @Override
     public String getProductDetails(){

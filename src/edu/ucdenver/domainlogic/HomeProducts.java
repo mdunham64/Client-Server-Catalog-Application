@@ -1,5 +1,7 @@
 package edu.ucdenver.domainlogic;
 
+import edu.ucdenver.store.User;
+
 import java.time.LocalDate;
 
 public class HomeProducts extends Product{
@@ -8,6 +10,7 @@ public class HomeProducts extends Product{
     public HomeProducts(String productID, String productName, String brandName, String productDescription, LocalDate dateofIncorporation, String location){
         super(productID,productName,brandName,productDescription,dateofIncorporation);
         this.location = location;
+        this.addCategory("HOME", "123", "Home Products");
     }
 
     @Override

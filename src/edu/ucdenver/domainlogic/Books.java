@@ -12,6 +12,8 @@ public class Books extends Product{
         this.authorName = authorName;
         this.publicationDate = publicationDate;
         this.numOfPages = numOfPages;
+        this.addCategory("BOOKS", "124", "BOOK Products");
+
     }
     @Override
     public String getProductDetails(){

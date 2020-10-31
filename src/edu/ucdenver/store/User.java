@@ -20,9 +20,10 @@ public class User {
 
     private Client mySocket;
 
-    public static ArrayList<Category> categories = new ArrayList<>(); //these need to be public so server can access them
-    public static ArrayList<Product> products = new ArrayList<>(); //these need to be public so server can access them
-    public static ArrayList<User> users = new ArrayList<>(); //these need to be public so server can access them
+    public static ArrayList<Category> categories = new ArrayList<Category>(); //these need to be public so server can access them
+    public static ArrayList<Product> products = new ArrayList<Product>(); //these need to be public so server can access them
+    public static ArrayList<User> users = new ArrayList<User>(); //these need to be public so server can access them
+
 
     public User(String username, String email, String password, boolean isAdmin){
         this.username = username;

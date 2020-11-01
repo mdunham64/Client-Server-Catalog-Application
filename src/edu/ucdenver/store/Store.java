@@ -1,6 +1,5 @@
 package edu.ucdenver.store;
 
-import com.sun.tools.corba.se.idl.constExpr.Or;
 import edu.ucdenver.domainlogic.*;
 
 import javax.rmi.CORBA.PortableRemoteObjectDelegate;
@@ -257,7 +256,16 @@ public class Store implements Serializable {
     }
 
     public void setAdmins(ArrayList<Admin> admins) {
+
         this.admins = admins;
+    }
+
+    public void addAdmin(Admin a){
+        admins.add(a);
+    }
+
+    public void addCustomer(Customer c){
+        customers.add(c);
     }
 
     public ArrayList<Order> getfinalizedOrders() {
@@ -276,4 +284,20 @@ public class Store implements Serializable {
         }
         return temp;
     }
+
+    public boolean checkEmailList(String email){
+
+        for(Admin a : admins){
+            if(a.getEmail().equalsIgnoreCase(email)){
+                return true;
+            }
+        }
+        for(Customer c : customers){
+            if(c.getEmail().equalsIgnoreCase(email)){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

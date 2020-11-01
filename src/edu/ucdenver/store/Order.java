@@ -44,7 +44,7 @@ public class Order {
         }
         return returnThis;
     }
-
+    //TODO : THIS NEEDS TO CHECK IF PRODUCT ALREADY EXITS
     public void addProductToOrder(Product addThis){
         try{
             orderList.add(addThis);

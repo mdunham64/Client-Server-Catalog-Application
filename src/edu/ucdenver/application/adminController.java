@@ -79,6 +79,7 @@ public class adminController {
     public TextField txtaddnewcategorydescription;
     public TextField txtsetdefaultcatid;
     public TextField txtsetdefaultcatdesc;
+    public CheckBox txtNewUserStatus;
 
 
     Client client;
@@ -120,7 +121,11 @@ public class adminController {
         String name = txtNewUserName.getText();
         String email = txtNewUserEmail.getText();
         String password = txtNewUserPassword.getText();
-        String cmd = "CNU|" + name + "|" + email + "|" + password;
+        String isAdmin = "F";
+        if (txtNewUserStatus.isSelected()){
+            isAdmin = "T";
+        }
+        String cmd = "CNU|" + name + "|" + email + "|" + password + "|" + isAdmin;
 
         showAlert(cmd);
     }
@@ -231,8 +236,11 @@ public class adminController {
 
     }
 
+    //TODO :   Not sure difference. One exits client one should
+    //     :   save store file.
     public void TerminateServerAndSave() {
-
+        String cmd = "T";
+        showAlert(cmd);
     }
 
     public void Exit() {

@@ -11,6 +11,8 @@ public class CellPhones extends Electronics{
         super(productID,productName,brandName,productDescription,dateofIncorporation,serialNumber,warrantyPeriod);
         this.imei = imei;
         this.operatingSystem = operatingSystem;
+        this.addCategory("PHONES", "125", "PHONE Products");
+
     }
     @Override
     public String getProductDetails(){

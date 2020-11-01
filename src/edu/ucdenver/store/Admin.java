@@ -12,8 +12,8 @@ public class Admin extends User {
     private static ArrayList<String> userList = new ArrayList<>();
     private static ArrayList<Product> productList = new ArrayList<>();
 
-    public Admin(String username, String email, String password, boolean bool) {
-        super(username, email, password, bool);
+    public Admin(String username, String email, String password) {
+        super(username, email, password, "T");
     }
 
 
@@ -91,7 +91,6 @@ public class Admin extends User {
         else
             System.out.print("Computer already exists");
     }
-
 
     public void addCellPhone(String productID, String productName, String brandName, String productDescription, LocalDate dateofIncorporation,
                              int serialNumber, int warrantyPeriod, String IMEI, String operatingSystem) {

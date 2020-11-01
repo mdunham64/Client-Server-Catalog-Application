@@ -3,26 +3,29 @@ package edu.ucdenver.server;
 import edu.ucdenver.domainlogic.*;
 import edu.ucdenver.store.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.time.LocalDate;
-
+import java.time.LocalDate;
 public class ClientWorker implements Runnable {
     private final Socket clientConnection;
     private PrintWriter output;
     private BufferedReader input;
     private boolean keepRunningClient;
     private final int id;
-    private User catalog;
 
-    public ClientWorker(Socket connection, User catalog, int id){
+    // FIXME : these are probably in the wrong spot
+    private Customer custUser = new Customer("default", "email", "password");
+    private Store store;
+
+
+    public ClientWorker(Socket connection, int id){
         this.clientConnection = connection;
         this.keepRunningClient = true;
         this.id = id;
-        this.catalog = catalog;
+        //loading store from source folder
+        //will be blank if nothing
+        this.store = loadFromFile();
     }
 
     private void getOutputStream(Socket clientConnection) throws IOException {
@@ -46,11 +49,26 @@ public class ClientWorker implements Runnable {
         try {
             switch (arguments[0]) { //arguments[0] must be the command
                 case "CNU": // create new user
-                    response = String.format("OK|Successfully Added new user: %s",clientMessage);
-                    User temp = new User(arguments[1],arguments[2],arguments[3], true);
-                    User.users.add(temp);
+
+                    response = "ERR|Did not add user.";
+
+                    if(store.checkEmailList(arguments[2])) {
+                        response = String.format("ERR|Email already exists");
+                    }
+                    else{
+                        if(arguments[4].equals("T")){
+                            Admin temp = new Admin(arguments[1],arguments[2],arguments[3]);
+                            store.addAdmin(temp);
+                        }
+                        else {
+                            Customer temp = new Customer(arguments[1], arguments[2], arguments[3]);
+                            store.addCustomer(temp);
+                        }
+                        response = String.format("OK|Successfully Added new user: %s",clientMessage);
+                    }
                     break;
-                case "LAU": // login a user
+                case "LAU": // login a user, lets decide who logs in
+
                     break;
                 case "ANP": // add new product ADMIN
                     /*
@@ -101,13 +119,13 @@ public class ClientWorker implements Runnable {
                     response = String.format("OK|Successfully added product: %s", placeholder.getProductName());
                     break;
                 case "RP": // remove product ADMIN
-                    for (Product p : User.products){
+                    for (Product p : store.getProductList()){
                         if(arguments[1].equalsIgnoreCase(p.getProductID())){
-                            User.products.remove(p);
+                            store.getProductList().remove(p);
                             response = String.format("OK|Successfully deleted product: %s",p.getProductName());
                         }
                         else
-                            response = String.format("ERR|The product is not in the catalog.");
+                            response = "ERR|The product is not in the catalog.";
                     }
                     break;
                 case "ACP": // add category to product ADMIN
@@ -133,7 +151,10 @@ public class ClientWorker implements Runnable {
                             response = String.format("ERR|The category is not in the catalog.");
                     }
                     break;
+
+                    //TODO : THIS IS THE CUSTOMER SIDE OF THINGS
                 case "SEARCH": // search the product list for keyword CUSTOMER
+
                     break;
                 case "BC": // browse category list all products CUSTOMER
                     break;
@@ -142,6 +163,13 @@ public class ClientWorker implements Runnable {
                 case "NCO": // new customer order CUSTOMER
                     break;
                 case "APO": // add product to order CUSTOMER
+                    String theProd = arguments[1];
+                    for(Product p : this.store.getProductList()){
+                        if(p.getProductID().equalsIgnoreCase(theProd)){
+                            this.custUser.getOrder().getOrderList().add(p);
+                            response = String.format("OK|Successfully added %s to the order", p.getProductName());
+                        }
+                    }
                     break;
                 case "RPO": // remove product from order CUSTOMER
                     break;
@@ -153,7 +181,9 @@ public class ClientWorker implements Runnable {
                     break;
                 case "OR": // order report CUSTOMER
                     break;
-                case "T": // terminate client
+                case "T": // terminate client, will save store file
+                    saveToFile();
+                    response = "OK|Successfully saved the catalog.";
                     break;
                 case "TEST":
                     response = "OK|Successfully connected to Java Catalog.";
@@ -184,6 +214,7 @@ public class ClientWorker implements Runnable {
     }
 
     private void closeClientConnection(){
+
         //Try to close all input, output and socket.
         try {this.input.close();} catch (IOException|NullPointerException e){e.printStackTrace();}
         try {this.output.close();} catch (NullPointerException e){e.printStackTrace();}
@@ -213,6 +244,57 @@ public class ClientWorker implements Runnable {
         }
         finally{
             closeClientConnection();
+        }
+    }
+
+    //TODO: This is to read from a store.java file and store a
+    //    : file. Its saving the file correctly "i think" but when you
+    //  :log in with a new client added users aren't in there. loadFromFile()
+    //  :is probably the problem.
+    public Store loadFromFile(){
+        String filename = "./StoreFile.ser";
+        ObjectInputStream ois = null;
+        Store theStore = new Store();
+        try{
+            ois = new ObjectInputStream(new FileInputStream(filename));
+            theStore = (Store) ois.readObject();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            theStore = new Store();
+        }
+        finally {
+            if ( ois != null){
+                try{
+                    ois.close();
+                }
+                catch(IOException ioe){ioe.printStackTrace();}
+            }
+        }
+        return theStore;
+    }
+
+    public void saveToFile(){
+        String filename = "./StoreFile.ser";
+
+        ObjectOutputStream oos = null;
+
+        try{
+            oos = new ObjectOutputStream(new FileOutputStream(filename));
+            oos.writeObject(this.store);
+        }
+        catch(IOException ioe){
+            ioe.printStackTrace();
+        }
+        finally {
+            if(oos != null){
+                try{
+                    oos.close();
+                }
+                catch(IOException ioe){
+                    ioe.printStackTrace();
+                }
+            }
         }
     }
 }

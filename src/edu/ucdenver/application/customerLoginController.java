@@ -17,7 +17,6 @@ public class customerLoginController {
     
     Client client;
 
-
     public customerLoginController(){
 
     }

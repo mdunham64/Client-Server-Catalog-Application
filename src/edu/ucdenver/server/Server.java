@@ -50,9 +50,9 @@ public class Server implements Runnable {
             this.serverSocket = new ServerSocket(this.port,this.backlog);
 
 
-            // ADD IN CODE FOR LOADING CATALOG FROM FILE HERE
-
             User admin = new Admin("admin","admin@ucdenver.edu","");
+
+
             while(true) {
                 try {
                     Socket clientConnection = this.waitForClientConnection();
@@ -78,48 +78,4 @@ public class Server implements Runnable {
         }
     }
 
-    public Store loadFromFile(){
-        String filename = "./catalogData.ser";
-        ObjectInputStream ois = null;
-        Store theStore = null;
-        try{
-            ois = new ObjectInputStream(new FileInputStream(filename));
-            theStore = (Store) ois.readObject();
-        }
-        catch(Exception e){
-            e.printStackTrace();
-            theStore = new Store();
-        }
-        finally {
-            if ( ois != null){
-                try{ois.close();}
-                catch(IOException ioe){ioe.printStackTrace();}
-            }
-        }
-        return theStore;
-    }
-
-    public void saveToFile(){
-        String filename = "./catalogData.ser";
-
-        ObjectOutputStream oos = null;
-
-        try{
-            oos = new ObjectOutputStream(new FileOutputStream(filename));
-            oos.writeObject(this);
-        }
-        catch(IOException ioe){
-            ioe.printStackTrace();
-        }
-        finally {
-            if(oos != null){
-                try{
-                    oos.close();
-                }
-                catch(IOException ioe){
-                    ioe.printStackTrace();
-                }
-            }
-        }
-    }
 }

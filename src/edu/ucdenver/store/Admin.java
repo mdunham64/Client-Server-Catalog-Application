@@ -13,7 +13,7 @@ public class Admin extends User {
     private static ArrayList<Product> productList = new ArrayList<>();
 
     public Admin(String username, String email, String password) {
-        super(username, email, password, true);
+        super(username, email, password, "T");
     }
 
 

@@ -104,7 +104,8 @@ public class catalogController{
 
     }
 
-    public void SearchProducts(){
+    public void btnSearchProducts(ActionEvent actionEvent){
+        listProductSearchResults.getItems().clear();
 
     }
 

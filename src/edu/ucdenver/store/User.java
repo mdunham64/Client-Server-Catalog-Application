@@ -18,24 +18,16 @@ public class User {
     private String password;
     private boolean isAdmin;
 
-    private Client mySocket;
-
     public static ArrayList<Category> categories = new ArrayList<Category>(); //these need to be public so server can access them
     public static ArrayList<Product> products = new ArrayList<Product>(); //these need to be public so server can access them
     public static ArrayList<User> users = new ArrayList<User>(); //these need to be public so server can access them
 
 
-    public User(String username, String email, String password, boolean isAdmin){
+    public User(String username, String email, String password, String isAdmin){
         this.username = username;
         this.email = email;
         this.password = password;
-        this.isAdmin = isAdmin;
-    }
-
-    //TODO  :   Each user needs a socket, also each needs
-    //      :   to specify ip/port
-    public Client login(String email, String password) {
-        return this.mySocket;
+        this.isAdmin = isAdmin.equals("T");
     }
 
     //Browsing & Searching methods
@@ -110,5 +102,4 @@ public class User {
     public boolean isAdmin() {
         return isAdmin;
     }
-
 }

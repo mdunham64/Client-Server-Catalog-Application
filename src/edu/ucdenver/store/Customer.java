@@ -6,7 +6,7 @@ public class Customer extends User{
     private Order order;
 
     public Customer(String username, String email, String password){
-        super(username, email, password, false);
+        super(username, email, password, "F");
         this.order = new Order(username);
     }
 
@@ -21,10 +21,6 @@ public class Customer extends User{
     public void setOrder(Order order) {
         this.order = order;
     }
-
-
-
-
 
 
 }

@@ -25,6 +25,11 @@ public class ClientWorker implements Runnable {
         //loading store from source folder
         //will be blank if nothing
         this.store = store;
+        this.store.addNewCategory("home","000","Description");
+        this.store.addHomeProduct("000", "sample name", "test", "sample description",
+                LocalDate.of(2020, 10, 30), "bathroom");
+        this.store.addHomeProduct("111", "sample name1", "test1", "test",
+                LocalDate.of(2020, 10, 30), "bathroom1");
     }
 
     private void getOutputStream(Socket clientConnection) throws IOException {
@@ -205,6 +210,23 @@ public class ClientWorker implements Runnable {
                     response = "OK|Saved Catalog to Catalog.ser.";
                     this.store.saveToFile();
                     break;
+                case "LCC":
+                    response = "LCC|" + custUser.getUsername()+"|"+custUser.getEmail()+"|"+custUser.getPassword();
+                    break;
+                case "ICB":
+                    response = "ICB";
+                    for(Category c : this.store.getCategories()){
+                        response += "|"+c.getCategoryName();
+                    }
+                    break;
+                case "BBC":
+                    response = "BBC";
+                    this.store.browseCategory(arguments[1]);
+                    for(String s : this.store.browseCategory(arguments[1])){
+                        response += "|" + s;
+                    }
+                    break;
+
                 default:
                     response = "ERR| Unknown Command.";
             }

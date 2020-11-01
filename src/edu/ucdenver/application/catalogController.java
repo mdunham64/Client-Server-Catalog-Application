@@ -42,10 +42,10 @@ public class catalogController{
     public Button btnCreateNewOrder;
     //Exit
     public Button btnExit;
-    public ListView<Product> listProductListForBrowse;
+    public ListView<String> listProductListForBrowse;
     public TextFlow txtProductDetails;
     public TextField txtCategoryToBrowse;
-    public ChoiceBox<Category> choiceBoxListofCategory;
+    public ChoiceBox<String> choiceBoxListofCategory;
     public Button btnAddToOrderProductDetailsSearch;
     public ListView<Product> listProductSearchResults;
     public ListView<Product> listProductsInOrder;
@@ -57,20 +57,65 @@ public class catalogController{
 
     //Once again not sure if line below is needed
     Client client;
-    Customer customer;
+    Customer customer = new Customer("default", "email", "password");
 
     public catalogController(){
         client = new Client();
-        theStore = new Store();
-        customer = new Customer("default", "email", "password");
-
         client.connect();
-        this.choiceBoxListofCategory = new ChoiceBox<Category>();
+
+        String cmd = "LCC|";
+        inputParser(cmd);
+        this.choiceBoxListofCategory = new ChoiceBox<String>();
     }
 
     public void initialize(){
-        this.choiceBoxListofCategory.setItems(FXCollections.observableArrayList(this.theStore.getCategories()));
+        String cmd = "ICB";
+        inputParser("ICB|");
+
     }
+    public void inputParser(String cmd){
+        Alert alert;
+        if(client.isConnected()){
+            try {
+                String response = client.sendRequest(cmd);
+                String[] respArgs = response.split("\\|");
+
+                switch (respArgs[0]) {
+                    case "LCC":
+                        this.customer.setUsername(respArgs[1]);
+                        this.customer.setEmail(respArgs[2]);
+                        this.customer.setPassword(respArgs[3]);
+                        break;
+                    case "ICB":
+                        ArrayList<String> temp = new ArrayList<>();
+                        for (int i = 1; i<respArgs.length; i++){
+                            temp.add(respArgs[i]);
+                        }
+                        choiceBoxListofCategory.setItems(FXCollections.observableArrayList(temp));
+                        break;
+                    case "BBC":
+                        ArrayList<String> temp1 = new ArrayList<>();
+                        for (int i = 1; i<respArgs.length; i++){
+                            temp1.add(respArgs[i]);
+                        }
+                        listProductListForBrowse.getItems().clear();
+                        listProductListForBrowse.setItems(FXCollections.observableArrayList(temp1));
+                        break;
+                    case "ERR":
+                        alert = new Alert(Alert.AlertType.ERROR, respArgs[1], ButtonType.OK);
+                        alert.show();
+                        break;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                alert = new Alert(Alert.AlertType.ERROR, "Server Response:" + e.getMessage(), ButtonType.OK);
+                alert.show();
+            }
+        } else {
+            alert = new Alert(Alert.AlertType.ERROR, "Client is not connected", ButtonType.OK);
+            alert.show();
+        }
+        }
 
     public void showAlert(String cmd){
         Alert alert;
@@ -128,22 +173,17 @@ public class catalogController{
 
     }
 
-    public void Exit(){
-
-    }
     public void btnBrowseCategory(ActionEvent actionEvent) {
-        listProductListForBrowse.getItems().clear(); //clears the list so with each new click, the list is refreshed
-        Category categoryChoice = choiceBoxListofCategory.getValue();
-        System.out.println();
-        listProductListForBrowse.setItems(FXCollections.observableArrayList(this.theStore.browseCategory(categoryChoice)));
+        String searchTerm = "BBC|" + choiceBoxListofCategory.getValue();
+        inputParser(searchTerm);
     }
 
     public void btnAddToOrder(ActionEvent actionEvent) {
-        //FIXME
+        /*//FIXME
         Product listSelect = listProductListForBrowse.getSelectionModel().getSelectedItem();
-        //this.theStore.addProdToOrder(this.customer, listSelect);
+        //this.theStore.addProdToOrder(this.customer, listSelect); //adds to the local customer variable
         String cmd = "APO|" + listSelect.getProductID();
-        showAlert(cmd);
+        showAlert(cmd);*/
 
     }
     public void btnAddToOrderV2(ActionEvent actionEvent) {
@@ -184,5 +224,15 @@ public class catalogController{
     }
 
     public void cancelOrderButton(ActionEvent actionEvent) {
+        Order orderSelection = listMyOrders.getSelectionModel().getSelectedItem();
+        for(Order o : this.theStore.getfinalizedOrders()){
+            if(o.getOrderNumber() == orderSelection.getOrderNumber()){
+                this.theStore.getfinalizedOrders().remove(o);
+            }
+        }
+    }
+    public void exitButton(ActionEvent actionEvent) {
+        String cmd = "T";
+        showAlert(cmd);
     }
 }

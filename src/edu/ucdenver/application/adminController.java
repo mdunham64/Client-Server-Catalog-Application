@@ -229,7 +229,8 @@ public class adminController {
     }
 
     public void GetCustomerOrderReport() {
-
+        String cmd = "SAVE|";
+        showAlert(cmd);
     }
 
     public void GetFinalizedOrders() {

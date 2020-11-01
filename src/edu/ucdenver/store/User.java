@@ -8,11 +8,12 @@ import edu.ucdenver.domainlogic.CellPhones;
 import edu.ucdenver.domainlogic.Computers;
 import edu.ucdenver.server.Client;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class User {
+public class User implements Serializable {
     private String username;
     private String email;
     private String password;

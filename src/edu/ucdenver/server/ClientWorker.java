@@ -14,18 +14,17 @@ public class ClientWorker implements Runnable {
     private boolean keepRunningClient;
     private final int id;
 
-    // FIXME : these are probably in the wrong spot
     private Customer custUser = new Customer("default", "email", "password");
     private Store store;
 
 
-    public ClientWorker(Socket connection, int id){
+    public ClientWorker(Socket connection, Store store, int id){
         this.clientConnection = connection;
         this.keepRunningClient = true;
         this.id = id;
         //loading store from source folder
         //will be blank if nothing
-        this.store = loadFromFile();
+        this.store = store;
     }
 
     private void getOutputStream(Socket clientConnection) throws IOException {
@@ -101,20 +100,20 @@ public class ClientWorker implements Runnable {
 
                     if (arguments[6].equals("NONE") && arguments[9].equals("NONE")){
                         placeholder = new HomeProducts(arguments[1],arguments[2],arguments[3],arguments[4],dateProductAdded,arguments[13]);
-                        User.products.add(placeholder);
+                        store.addHomeProduct(arguments[1],arguments[2],arguments[3],arguments[4],dateProductAdded,arguments[13]);
                     }
                     if (arguments[9].equals("NONE") && !arguments[6].equals("NONE")){
                         placeholder = new Books(arguments[1],arguments[2],arguments[3],arguments[4],dateProductAdded, arguments[6],publicationDate,Integer.parseInt(arguments[8]));
-                        User.products.add(placeholder);
+                        store.addBook(arguments[1],arguments[2],arguments[3],arguments[4],dateProductAdded, arguments[6],publicationDate,Integer.parseInt(arguments[8]));
                     }
                     if (!arguments[9].equals("NONE") && arguments[6].equals("NONE")
                      && arguments[12].equals("NONE")){
                         placeholder = new Computers(arguments[1],arguments[2],arguments[3],arguments[4],dateProductAdded,Integer.parseInt(arguments[9]),Integer.parseInt(arguments[10]),arguments[11]);
-                        User.products.add(placeholder);
+                        store.addComputer(arguments[1],arguments[2],arguments[3],arguments[4],dateProductAdded,Integer.parseInt(arguments[9]),Integer.parseInt(arguments[10]),arguments[11]);
                     }
                     if (!arguments[9].equals("NONE") && arguments[6].equals("NONE") && !arguments[12].equals("NONE")){
                         placeholder = new CellPhones(arguments[1],arguments[2],arguments[3],arguments[4],dateProductAdded,Integer.parseInt(arguments[9]),Integer.parseInt(arguments[10]),arguments[12],arguments[14]);
-                        User.products.add(placeholder);
+                        store.addCellPhone(arguments[1],arguments[2],arguments[3],arguments[4],dateProductAdded,Integer.parseInt(arguments[9]),Integer.parseInt(arguments[10]),arguments[12],arguments[14]);
                     }
                     response = String.format("OK|Successfully added product: %s", placeholder.getProductName());
                     break;
@@ -133,18 +132,18 @@ public class ClientWorker implements Runnable {
                 case "DCP": // delete category to product ADMIN
                     break;
                 case "ANC": // add new category ADMIN
-                    Category temp1 = new Category(arguments[1],arguments[2],arguments[3]);
-                    User.categories.add(temp1);
-                    response = String.format("OK|Successfully added Category: %s", temp1.getCategoryName());
+                    Category temp = new Category(arguments[1],arguments[2],arguments[3]);
+                    store.addNewCategory(arguments[1],arguments[2],arguments[3]);
+                    response = String.format("OK|Successfully added Category: %s", temp.getCategoryName());
                     break;
                 case "SDC": // set default category ADMIN
                     Category.setDefaultvalues(arguments[1],arguments[2],arguments[3]);
                     response = String.format("OK|Successfully set the default category to: %s", Category.defaultName);
                     break;
                 case "DC": // delete category ADMIN
-                    for (Category c : User.categories){
+                    for (Category c : store.getCategories()){
                         if(arguments[1].equalsIgnoreCase(c.getCategoryName())){
-                            User.categories.remove(c);
+                            store.removeCategory(c);
                             response = String.format("OK|Successfully deleted category: %s", c.getCategoryName());
                         }
                         else
@@ -186,7 +185,6 @@ public class ClientWorker implements Runnable {
                     response = "OK|Successfully saved the catalog.";
                     break;
                 case "TEST":
-                    response = "OK|Successfully connected to Java Catalog.";
                     break;
                 case "AL":
                     for (User u : User.users){
@@ -202,6 +200,10 @@ public class ClientWorker implements Runnable {
                             response = "ERR|Incorrect email.";
                         }
                     }
+                    break;
+                case "SAVE":
+                    response = "OK|Saved Catalog to Catalog.ser.";
+                    this.store.saveToFile();
                     break;
                 default:
                     response = "ERR| Unknown Command.";

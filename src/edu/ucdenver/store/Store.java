@@ -3,7 +3,7 @@ package edu.ucdenver.store;
 import edu.ucdenver.domainlogic.*;
 
 import javax.rmi.CORBA.PortableRemoteObjectDelegate;
-import java.io.Serializable;
+import java.io.*;
 import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -298,6 +298,52 @@ public class Store implements Serializable {
             }
         }
         return false;
+    }
+
+    public void saveToFile(){
+        String filename = "./university.ser";
+
+
+        ObjectOutputStream oos = null;
+
+        try{
+            oos = new ObjectOutputStream(new FileOutputStream(filename));
+            oos.writeObject(this);
+        }
+        catch(IOException ioe){
+            ioe.printStackTrace();
+        }
+        finally {
+            if(oos != null){
+                try{
+                    oos.close();
+                }
+                catch(IOException ioe){
+                    ioe.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public static Store loadFromFile(){
+        String filename = "./StoreFile.ser";
+        ObjectInputStream ois = null;
+        Store store = null;
+        try{
+            ois = new ObjectInputStream(new FileInputStream(filename));
+            store = (Store) ois.readObject();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            store = new Store();
+        }
+        finally {
+            if ( ois != null){
+                try{ois.close();}
+                catch(IOException ioe){ioe.printStackTrace();}
+            }
+        }
+        return store;
     }
 
 }

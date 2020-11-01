@@ -14,7 +14,6 @@ public class ClientWorker implements Runnable {
     private boolean keepRunningClient;
     private final int id;
 
-    // FIXME : these are probably in the wrong spot
     private Customer custUser = new Customer("default", "email", "password");
     private Store store;
 

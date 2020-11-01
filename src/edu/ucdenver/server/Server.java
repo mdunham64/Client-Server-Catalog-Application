@@ -51,21 +51,20 @@ public class Server implements Runnable {
         try{
             this.serverSocket = new ServerSocket(this.port,this.backlog);
 
+            System.out.println("Enter 1 to load Catalog from file named: StoreFile.ser.");
+            Scanner sc = new Scanner(System.in);
+            int option = sc.nextInt();
+            if (option == 1){
+                this.store = Store.loadFromFile();
+                System.out.println("Successfully loaded Store from: StoreFile.ser.");
+            }
+            if(option == 2){
+                this.store = new Store();
+                System.out.println("Creating new store.");
+            }
 
             while(true) {
                 try {
-                    System.out.println("Enter 1 to load Catalog from file named: StoreFile.ser.");
-                    Scanner sc = new Scanner(System.in);
-                    int option = sc.nextInt();
-                    if (option == 1){
-                        this.store = Store.loadFromFile();
-                        System.out.println("Successfully loaded Store from: StoreFile.ser.");
-                    }
-                    if(option == 2){
-                        this.store = new Store();
-                        System.out.println("Creating new store.");
-                    }
-
                     Socket clientConnection = this.waitForClientConnection();
 
                     ClientWorker cw = new ClientWorker(clientConnection,this.store, this.connectionCounter); // add parameters later

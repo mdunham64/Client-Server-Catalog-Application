@@ -47,8 +47,8 @@ public class catalogController{
     public TextField txtCategoryToBrowse;
     public ChoiceBox<String> choiceBoxListofCategory;
     public Button btnAddToOrderProductDetailsSearch;
-    public ListView<Product> listProductSearchResults;
-    public ListView<Product> listProductsInOrder;
+    public ListView<String> listProductSearchResults;
+    public ListView<String> listProductsInOrder;
     public Button btnUpdateOrderList;
     public Button btnUpdateMyOrders;
     public ListView<Order> listMyOrders;
@@ -105,6 +105,24 @@ public class catalogController{
                         alert = new Alert(Alert.AlertType.ERROR, respArgs[1], ButtonType.OK);
                         alert.show();
                         break;
+                    case "BSP":
+                        ArrayList<String> temp2 = new ArrayList<>();
+                        for(int i =1; i<respArgs.length; i++){
+                            temp2.add(respArgs[i]);
+                        }
+                        listProductSearchResults.getItems().clear();
+                        listProductSearchResults.setItems(FXCollections.observableArrayList(temp2));
+                        break;
+                    case "ORD":
+                        ArrayList<String> temp3 = new ArrayList<>();
+                        for(int i =1; i<respArgs.length; i++){
+                            temp3.add(respArgs[i]);
+                        }
+                        listProductsInOrder.getItems().clear();
+                        listProductsInOrder.setItems(FXCollections.observableArrayList(temp3));
+                        break;
+                    default:
+                        System.out.print("No Case Found");
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -179,42 +197,39 @@ public class catalogController{
     }
 
     public void btnAddToOrder(ActionEvent actionEvent) {
-        /*//FIXME
-        Product listSelect = listProductListForBrowse.getSelectionModel().getSelectedItem();
-        //this.theStore.addProdToOrder(this.customer, listSelect); //adds to the local customer variable
-        String cmd = "APO|" + listSelect.getProductID();
-        showAlert(cmd);*/
+
+        String listSelect = listProductListForBrowse.getSelectionModel().getSelectedItem();
+        String cmd = "APO|" + listSelect;
+        showAlert(cmd);
 
     }
     public void btnAddToOrderV2(ActionEvent actionEvent) {
-        Product listSelect = listProductSearchResults.getSelectionModel().getSelectedItem();
-        this.theStore.addProdToOrder(this.customer, listSelect);
-        System.out.println(customer.getOrder().getOrderList());
+        String listSelect = "SAPO|" + listProductSearchResults.getSelectionModel().getSelectedItem();
+        showAlert(listSelect);
     }
 
     public void clickSearchProducts(ActionEvent actionEvent) {
         listProductSearchResults.getItems().clear();
-        String searchTerm = txtSearchProducts.getText();
-        listProductSearchResults.setItems(FXCollections.observableArrayList(this.theStore.searchByTerm(searchTerm)));
+        String searchTerm = "BSP|" + txtSearchProducts.getText();
+        inputParser(searchTerm);
     }
 
     public void UpdateOrderListButton(ActionEvent actionEvent) {
         listProductsInOrder.getItems().clear();
-        listProductsInOrder.setItems(FXCollections.observableArrayList(this.customer.getOrder().getOrderList()));
+        String cmd = "ORD|";
+        inputParser(cmd);
+        //move 2 parser
+        //listProductsInOrder.setItems(FXCollections.observableArrayList(this.customer.getOrder().getOrderList()));*/
     }
 
     public void removeButtonFromOrderButton(ActionEvent actionEvent) {
-        Product listSelect = listProductsInOrder.getSelectionModel().getSelectedItem();
-        this.customer.getOrder().removeProductFromOrder(listSelect);
-        listProductsInOrder.getItems().clear();
-        listProductsInOrder.setItems(FXCollections.observableArrayList(this.customer.getOrder().getOrderList()));
+        String listSelect = "RPO|" + listProductsInOrder.getSelectionModel().getSelectedItem();
+        showAlert(listSelect);
     }
 
     public void finalizeOrderButton(ActionEvent actionEvent) {
-        Order currentOrder = this.customer.getOrder();
-        this.theStore.finalizeOrder(this.customer, currentOrder);
-        this.customer.getOrder().getOrderList().clear();
-
+        String cmd = "FINAL|";
+        showAlert(cmd);
     }
 
     public void UpdateMyOrdersbutton(ActionEvent actionEvent) {

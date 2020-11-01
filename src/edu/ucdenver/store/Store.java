@@ -1,5 +1,6 @@
 package edu.ucdenver.store;
 
+import com.sun.tools.corba.se.idl.constExpr.Or;
 import edu.ucdenver.domainlogic.*;
 
 import javax.rmi.CORBA.PortableRemoteObjectDelegate;
@@ -14,8 +15,6 @@ public class Store implements Serializable {
     private ArrayList<Customer> customers = new ArrayList<>();
     private ArrayList<Admin> admins = new ArrayList<>();
     private ArrayList<Order> finalizedOrders = new ArrayList<>();
-    private static int orderNumber = 1234567;
-
     public Store(){
 
     }
@@ -186,24 +185,31 @@ public class Store implements Serializable {
         }
     }
 
-    public void removeProductFromOrder(Customer custy, Product removeThis){
+    public void removeProductFromOrder(Customer custy, String removeThis){
         try {
             for (Product p : custy.getOrder().getOrderList()) {
+                System.out.print("MAC TEST");
                 if(custy.getOrder().searchForProduct(removeThis)){
-                    custy.getOrder().getOrderList().remove(removeThis);
+                    custy.getOrder().getOrderList().remove(p);
                 }
             }
         }
             catch(NullPointerException e){
-                System.out.printf("Could not find this product in your list. %s", removeThis.getProductName());
+                System.out.printf("Could not find this product in your list. %s", removeThis);
             }
     }
 
     public void finalizeOrder(Customer c, Order o){
         //set a unique order number
+        int temp = 0;
 
-        o.setOrderNumber(orderNumber);
-        orderNumber++;
+        for(Order f : finalizedOrders){
+            if(temp <= f.getOrderNumber()){
+                temp = f.getOrderNumber()+1;
+            }
+        }
+        o.setOrderNumber(temp);
+
         //set email
         o.setCustEmail(c.getEmail());
         //set status
@@ -212,10 +218,8 @@ public class Store implements Serializable {
         o.setFinalizedDate(LocalDate.now());
         //add to finalizedOrders list
         this.finalizedOrders.add(o);
+        c.setOrder(new Order(c.getUsername()));
         //for testing, delete later
-        for(Order order123 : finalizedOrders){
-            System.out.println(order123.getOrderNumber());
-        }
     }
 
     //Getters & Setters

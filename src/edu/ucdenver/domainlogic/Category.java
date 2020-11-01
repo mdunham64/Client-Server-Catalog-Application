@@ -1,9 +1,10 @@
 package edu.ucdenver.domainlogic;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class Category {
+public class Category implements Serializable {
     private String categoryName;
     private String categoryID;
     public String categoryDescription;

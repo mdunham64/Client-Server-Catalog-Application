@@ -3,10 +3,11 @@ package edu.ucdenver.domainlogic;
 import com.sun.xml.internal.bind.v2.TODO;
 import edu.ucdenver.store.User;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public abstract class Product {
+public abstract class Product implements Serializable {
     private String productID;
     private String productName;
     private String brandName;

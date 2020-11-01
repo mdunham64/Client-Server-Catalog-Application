@@ -3,10 +3,11 @@ package edu.ucdenver.store;
 import edu.ucdenver.domainlogic.*;
 
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class Admin extends User {
+public class Admin extends User implements Serializable{
 
     //TODO : I need to keep track of valid emails/users
     private static ArrayList<String> userList = new ArrayList<>();

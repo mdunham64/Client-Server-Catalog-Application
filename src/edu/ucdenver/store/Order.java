@@ -3,10 +3,11 @@ package edu.ucdenver.store;
 import edu.ucdenver.domainlogic.Product;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class Order {
+public class Order implements Serializable {
 
     private int orderNumber;
     private String status;

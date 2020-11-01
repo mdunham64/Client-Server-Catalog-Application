@@ -10,6 +10,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -19,6 +20,7 @@ public class Server implements Runnable {
     private int connectionCounter; // keep track of how many clients are connected.
     private ServerSocket serverSocket;
     private boolean keepRunningClient;
+    private Store store;
 
 
     public Server(int port, int backlog){
@@ -50,18 +52,23 @@ public class Server implements Runnable {
             this.serverSocket = new ServerSocket(this.port,this.backlog);
 
 
-            User admin = new Admin("admin","admin@ucdenver.edu","");
-
-
             while(true) {
                 try {
+                    System.out.println("Enter 1 to load Catalog from file named: StoreFile.ser.");
+                    Scanner sc = new Scanner(System.in);
+                    int option = sc.nextInt();
+                    if (option == 1){
+                        this.store = Store.loadFromFile();
+                        System.out.println("Successfully loaded Store from: StoreFile.ser.");
+                    }
+                    if(option == 2){
+                        this.store = new Store();
+                        System.out.println("Creating new store.");
+                    }
+
                     Socket clientConnection = this.waitForClientConnection();
 
-
-                    //if loading from file, load the admin user and populate the catalog
-                    //else create default admin with email of admin@ucdenver.edu and pass blank
-                    //attach object of Admin for saved information
-                    ClientWorker cw = new ClientWorker(clientConnection, this.connectionCounter); // add parameters later
+                    ClientWorker cw = new ClientWorker(clientConnection,this.store, this.connectionCounter); // add parameters later
 
                     executorService.execute(cw);
                 }

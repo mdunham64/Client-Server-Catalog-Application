@@ -8,7 +8,7 @@ public class Category implements Serializable {
     private String categoryName;
     private String categoryID;
     public String categoryDescription;
-    public static String defaultName = "home";
+    public static String defaultName = "DEFAULT";
     public static String defaultID = "12345";
     public static String defaultcategoryDescription = "NONE";
     private ArrayList<Product> products = new ArrayList<Product>();

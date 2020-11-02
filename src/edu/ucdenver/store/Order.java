@@ -92,6 +92,10 @@ public class Order implements Serializable {
         this.finalizedDate = finalizedDate;
     }
 
+    public LocalDate getFinalizedDate() {
+        return finalizedDate;
+    }
+
     public void setCustEmail(String custEmail) {
         this.custEmail = custEmail;
     }

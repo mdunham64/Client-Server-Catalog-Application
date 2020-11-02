@@ -9,6 +9,7 @@ import java.io.*;
 import java.net.Socket;
 import java.time.LocalDate;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class ClientWorker implements Runnable {
@@ -132,9 +133,11 @@ public class ClientWorker implements Runnable {
                             response = "ERR|The product is not in the catalog.";
                     }
                     break;
-                case "ACP": // add category to product ADMIN
-                    break;
-                case "DCP": // delete category to product ADMIN
+                case "CUSTLIST":
+                    response = "CUSTLIST";
+                    for(Order ord : this.store.getfinalizedOrders()){
+                        response += "|" + ord.getCustEmail();
+                    }
                     break;
                 case "ANC": // add new category ADMIN
                     Category temp = new Category(arguments[1],arguments[2],arguments[3]);
@@ -259,6 +262,30 @@ public class ClientWorker implements Runnable {
                         response += "|"+c.getCategoryName();
                     }
                     break;
+                case "GCOR":
+                    response = "GCOR";
+                    String searchTerm1 = arguments[1];
+                    for(Order o : this.store.getfinalizedOrders()){
+                        if(o.getCustEmail().equalsIgnoreCase(searchTerm1)){
+                            String str = Integer.toString(o.getOrderNumber());
+                            response += "|" + str;
+                        }
+                    }
+                    break;
+                case "DATE":
+                    response = "DATE";
+                    String start = arguments[1];
+                    String end = arguments[2];
+                    LocalDate localStart = LocalDate.parse(start);
+                    LocalDate localEnd = LocalDate.parse(end);
+
+                    for(Order ord : this.store.getfinalizedOrders()){
+                        if((ord.getFinalizedDate().isAfter(localStart) || ord.getFinalizedDate().isEqual(localStart)) &&
+                                (ord.getFinalizedDate().isBefore(localEnd) || ord.getFinalizedDate().isEqual(localEnd))){
+                            response += "|" + Integer.toString(ord.getOrderNumber());
+                        }
+                    }
+                        break;
                 case "BBC":
                     response = "BBC";
                     this.store.browseCategory(arguments[1]);

@@ -12,6 +12,7 @@ import javafx.scene.text.TextFlow;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class adminController {
@@ -64,7 +65,7 @@ public class adminController {
     public Button btnSetDefaultCategory;
     public TextFlow textFlowSetDefaultCategoryMessage;
     //Finalized Order Report Variables
-    public ChoiceBox choiceBoxCustomerList;
+    public ChoiceBox<String> choiceBoxCustomerList;
     public Button btnGetCustomerOrderReport;
     public TextFlow textFlowCustomerOrderList;
     public DatePicker datePickerStartListOrders;
@@ -83,6 +84,8 @@ public class adminController {
     public TextField txtsetdefaultcatdesc;
     public CheckBox txtNewUserStatus;
     public ChoiceBox<String> choiceBoxCategorytoRemove;
+    public ListView<String> listCustomerOrders;
+    public ListView<String> listFinalizedOdersbyDate;
 
 
     Client client;
@@ -96,6 +99,8 @@ public class adminController {
         //send to server for category names
         String icb = "ICBONE|";
         inputParser(icb);
+        String initCustomerListChoiceBox = "CUSTLIST|";
+        inputParser(initCustomerListChoiceBox);
     }
 
     public void inputParser(String cmd){
@@ -114,6 +119,29 @@ public class adminController {
                         }
                         choiceBoxCategorytoRemove.setItems(FXCollections.observableArrayList(temp));
                         choiceBoxCategoryList.setItems(FXCollections.observableArrayList(temp));
+                        break;
+                    case "CUSTLIST":
+                        ArrayList<String> temp2 = new ArrayList<>();
+                        for(int i = 1; i<respArgs.length; i++){
+                            temp2.add(respArgs[i]);
+                        }
+                        choiceBoxCustomerList.setItems(FXCollections.observableArrayList(temp2));
+                        break;
+                    case "GCOR":
+                        ArrayList<String> temp3 = new ArrayList<>();
+                        for(int i = 1; i<respArgs.length; i++){
+                            temp3.add(respArgs[i]);
+                        }
+                        listCustomerOrders.getItems().clear();
+                        listCustomerOrders.setItems(FXCollections.observableArrayList(temp3));
+                        break;
+                    case "DATE":
+                        ArrayList<String> temp4 = new ArrayList<>();
+                        for(int i = 1; i<respArgs.length; i++){
+                            temp4.add(respArgs[i]);
+                        }
+                        listFinalizedOdersbyDate.getItems().clear();
+                        listFinalizedOdersbyDate.setItems(FXCollections.observableArrayList(temp4));
                         break;
                     default:
                         System.out.print("No Case Found");
@@ -273,12 +301,16 @@ public class adminController {
     }
 
     public void GetCustomerOrderReport() {
-        String cmd = "SAVE|";
-        showAlert(cmd);
+        String cmd = "GCOR|";
+        cmd += choiceBoxCustomerList.getValue();
+        inputParser(cmd);
     }
 
     public void GetFinalizedOrders() {
-
+        String startStr = datePickerStartListOrders.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String endStr = datePickerEndListOrders.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String cmd = "DATE|" + startStr + "|" + endStr;
+        inputParser(cmd);
     }
 
     //TODO :   Not sure difference. One exits client one should

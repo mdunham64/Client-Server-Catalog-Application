@@ -29,10 +29,10 @@ public class Store implements Serializable {
 
         productList.add(hp1);
         productList.add(hp2);
-        /*this.store.addHomeProduct("000", "sample name", "test", "sample description",
-                LocalDate.of(2020, 10, 30), "bathroom");
-        this.store.addHomeProduct("111", "sample name1", "test1", "test",
-                LocalDate.of(2020, 10, 30), "bathroom1");*/
+        Order finalTest = new Order("JakeB");
+        finalTest.setCustEmail("jake@mac.com");
+        finalTest.setFinalizedDate(LocalDate.of(2015, 10, 31));
+        finalizedOrders.add(finalTest);
     }
 
     public void createNewAdmin(String email, String name, String pass) {

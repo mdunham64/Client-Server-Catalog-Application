@@ -170,34 +170,6 @@ public class catalogController{
         }
     }
 
-    public void GetProductDetailsAddToOrderBrowse(){
-
-    }
-
-    public void btnSearchProducts(ActionEvent actionEvent){
-        listProductSearchResults.getItems().clear();
-
-    }
-
-    public void GetProductDetailsAddToOrderSearch(){
-
-    }
-
-    public void CreateNewOrder(){
-
-    }
-    public void CancelOrder(){
-
-    }
-
-    public void RemoveProductFromOrder(){
-
-    }
-
-    public void FinalizeOrder(){
-
-    }
-
     public void btnBrowseCategory(ActionEvent actionEvent) {
         String searchTerm = "BBC|" + choiceBoxListofCategory.getValue();
         inputParser(searchTerm);
@@ -245,15 +217,6 @@ public class catalogController{
 
         //listMyOrders.setItems(FXCollections.observableArrayList(theStore.getFinalOrdersByEmail(this.customer.getEmail())));
 
-    }
-
-    public void cancelOrderButton(ActionEvent actionEvent) {
-        /*Order orderSelection = listMyOrders.getSelectionModel().getSelectedItem();
-        for(Order o : this.theStore.getfinalizedOrders()){
-            if(o.getOrderNumber() == orderSelection.getOrderNumber()){
-                this.theStore.getfinalizedOrders().remove(o);
-            }
-        }*/
     }
     public void exitButton(ActionEvent actionEvent) {
         String cmd = "T";

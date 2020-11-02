@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
@@ -269,34 +270,27 @@
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                     </columnConstraints>
                                     <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="159.0" minHeight="0.0" prefHeight="46.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="260.0" minHeight="10.0" prefHeight="226.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="246.0" minHeight="10.0" prefHeight="19.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="219.0" minHeight="10.0" prefHeight="219.0" vgrow="SOMETIMES" />
                                     </rowConstraints>
                                     <children>
-                                        <Label text="Choose a Customer" />
-                                        <ChoiceBox fx:id="choiceBoxCustomerList" prefWidth="150.0" GridPane.columnIndex="1" />
-                                        <Button fx:id="btnGetCustomerOrderReport" mnemonicParsing="false" text="Get Order Report" GridPane.columnIndex="2" />
-                                        <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3">
-                                            <content>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
-                                                    <children>
-                                                        <TextFlow fx:id="textFlowCustomerOrderList" prefHeight="200.0" prefWidth="200.0" />
-                                                    </children>
-                                                </AnchorPane>
-                                            </content>
+                                        <Label text="Choose a Customer" GridPane.rowIndex="1" />
+                                        <ChoiceBox fx:id="choiceBoxCustomerList" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                        <Button fx:id="btnGetCustomerOrderReport" mnemonicParsing="false" onAction="#GetCustomerOrderReport" text="Get Order Report" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                        <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                 <content>
+                                    <ListView fx:id="listCustomerOrders" prefHeight="200.0" prefWidth="200.0" />
+                                 </content>
                                         </ScrollPane>
-                                        <DatePicker fx:id="datePickerStartListOrders" promptText="Start Date" GridPane.rowIndex="1" />
-                                        <DatePicker fx:id="datePickerEndListOrders" promptText="End Date" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                        <Button fx:id="btnGetFinalizedOrders" mnemonicParsing="false" text="Get All Orders Finalized Between Dates" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                        <ScrollPane layoutX="538.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                                            <content>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
-                                                    <children>
-                                                        <TextFlow fx:id="textFlowOrderListBetweenDates" prefHeight="200.0" prefWidth="200.0" />
-                                                    </children>
-                                                </AnchorPane>
-                                            </content>
+                                        <DatePicker fx:id="datePickerStartListOrders" promptText="Start Date" GridPane.rowIndex="3" />
+                                        <DatePicker fx:id="datePickerEndListOrders" promptText="End Date" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                        <Button fx:id="btnGetFinalizedOrders" mnemonicParsing="false" onAction="#GetFinalizedOrders" text="Get All Orders Finalized Between Dates" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                        <ScrollPane layoutX="538.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                                 <content>
+                                    <ListView fx:id="listFinalizedOdersbyDate" prefHeight="200.0" prefWidth="200.0" />
+                                 </content>
                                         </ScrollPane>
                                     </children>
                                 </GridPane>

@@ -1,12 +1,16 @@
 package edu.ucdenver.server;
 
+import com.sun.deploy.ui.ProgressDialog;
 import edu.ucdenver.domainlogic.*;
 import edu.ucdenver.store.*;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import java.io.*;
 import java.net.Socket;
 import java.time.LocalDate;
 import java.time.LocalDate;
+import java.util.ArrayList;
+
 public class ClientWorker implements Runnable {
     private final Socket clientConnection;
     private PrintWriter output;
@@ -25,6 +29,11 @@ public class ClientWorker implements Runnable {
         //loading store from source folder
         //will be blank if nothing
         this.store = store;
+        this.store.addNewCategory("home","000","Description");
+        this.store.addHomeProduct("000", "sample name", "test", "sample description",
+                LocalDate.of(2020, 10, 30), "bathroom");
+        this.store.addHomeProduct("111", "sample name1", "test1", "test",
+                LocalDate.of(2020, 10, 30), "bathroom1");
     }
 
     private void getOutputStream(Socket clientConnection) throws IOException {
@@ -152,34 +161,47 @@ public class ClientWorker implements Runnable {
                     break;
 
                     //TODO : THIS IS THE CUSTOMER SIDE OF THINGS
-                case "SEARCH": // search the product list for keyword CUSTOMER
-
-                    break;
-                case "BC": // browse category list all products CUSTOMER
-                    break;
-                case "AP": // show all products CUSTOMER
-                    break;
-                case "NCO": // new customer order CUSTOMER
-                    break;
                 case "APO": // add product to order CUSTOMER
+                case "SAPO":
+                    response = "OK|";
                     String theProd = arguments[1];
                     for(Product p : this.store.getProductList()){
-                        if(p.getProductID().equalsIgnoreCase(theProd)){
+                        if(p.getProductName().equalsIgnoreCase(theProd)){
                             this.custUser.getOrder().getOrderList().add(p);
-                            response = String.format("OK|Successfully added %s to the order", p.getProductName());
                         }
                     }
                     break;
+                case "BSP":
+                    response = "BSP";
+                    String searchTerm = arguments[1];
+                    this.store.searchByTerm(searchTerm);
+                    for(Product p : this.store.searchByTerm(searchTerm)){
+                        response += "|" + p.getProductName();
+                    }
+                    break;
+                case "ORD":
+                    response = "ORD";
+                    for(Product p : this.custUser.getOrder().getOrderList()){
+                        response += "|" + p.getProductName();
+                    }
+                    break;
                 case "RPO": // remove product from order CUSTOMER
+                    response = "OK|";
+                    for(Product p : this.custUser.getOrder().getOrderList()){
+                        if(p.getProductName().equalsIgnoreCase(arguments[1])){
+                            this.custUser.getOrder().getOrderList().remove(p);
+                            break;
+                        }
+                    }
                     break;
-                case "LOP": // list products in current order CUSTOMER
+                case "FINAL":
+                    this.store.finalizeOrder(custUser, custUser.getOrder());
+                    response = "OK|";
+                    for(Order o : this.store.getfinalizedOrders()){
+                        System.out.println(o);
+                    }
                     break;
-                case "FO": // finalize the order so nothing can be added CUSTOMER
-                    break;
-                case "CO": // cancel order CUSTOMER
-                    break;
-                case "OR": // order report CUSTOMER
-                    break;
+
                 case "T": // terminate client, will save store file
                     saveToFile();
                     response = "OK|Successfully saved the catalog.";
@@ -204,6 +226,33 @@ public class ClientWorker implements Runnable {
                 case "SAVE":
                     response = "OK|Saved Catalog to Catalog.ser.";
                     this.store.saveToFile();
+                    break;
+                case "LCC":
+                    response = "LCC|" + custUser.getUsername()+"|"+custUser.getEmail()+"|"+custUser.getPassword();
+                    break;
+                case "ICB":
+                    response = "ICB";
+                    for(Category c : this.store.getCategories()){
+                        response += "|"+c.getCategoryName();
+                    }
+                    break;
+                case "BBC":
+                    response = "BBC";
+                    this.store.browseCategory(arguments[1]);
+                    for(String s : this.store.browseCategory(arguments[1])){
+                        response += "|" + s;
+                    }
+                    break;
+                case "UMO":
+                    response = "UMO";
+                    ArrayList<Order> iter = store.getFinalOrdersByEmail(custUser.getEmail());
+                    for(Order ord : iter){
+                        response += "|"+ Integer.toString(ord.getOrderNumber());
+                    }
+                    break;
+                case "COO":
+                    response = "OK|";
+                    this.custUser.getOrder().getOrderList().clear();
                     break;
                 default:
                     response = "ERR| Unknown Command.";

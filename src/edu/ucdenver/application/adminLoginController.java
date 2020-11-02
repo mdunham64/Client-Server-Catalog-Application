@@ -34,7 +34,6 @@ public class adminLoginController {
     public adminLoginController() {
 
     }
-
     public void showAlert(String cmd){
         Alert alert;
         if(client.isConnected()){

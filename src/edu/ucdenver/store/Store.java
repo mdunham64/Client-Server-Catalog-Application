@@ -1,5 +1,6 @@
 package edu.ucdenver.store;
 
+import com.sun.tools.corba.se.idl.constExpr.Or;
 import edu.ucdenver.domainlogic.*;
 
 import javax.rmi.CORBA.PortableRemoteObjectDelegate;
@@ -14,17 +15,8 @@ public class Store implements Serializable {
     private ArrayList<Customer> customers = new ArrayList<>();
     private ArrayList<Admin> admins = new ArrayList<>();
     private ArrayList<Order> finalizedOrders = new ArrayList<>();
-    private static int orderNumber = 1234567;
-
     public Store(){
-        //populate lists from files
-        //the lines below populate these lists before we have tried to load from file.
-        //FIXME
-        this.categories.add(new Category("HOME", "000", "Description"));
-        this.productList.add(new HomeProducts("000", "sample name", "test", "sample description",
-                LocalDate.of(2020, 10, 30), "bathroom"));
-        this.productList.add(new HomeProducts("111", "sample name1", "test1", "test",
-                LocalDate.of(2020, 10, 30), "bathroom1"));
+
     }
 
     public void createNewAdmin(String email, String name, String pass) {
@@ -161,14 +153,13 @@ public class Store implements Serializable {
         }
     }
 
-    public ArrayList<Product> browseCategory(Category c){
-        ArrayList<Product> temp = new ArrayList<>();
-
+    public ArrayList<String> browseCategory(String c){
+        ArrayList<String> temp = new ArrayList<>();
         //loop thru user products looking for category choice.name
         for (Product p : this.productList) {
             for (int i = 0; i<p.categories.size(); i++){
-                if (p.categories.get(i).getCategoryName().equalsIgnoreCase(c.getCategoryName())) {
-                    temp.add(p);
+                if (p.categories.get(i).getCategoryName().equalsIgnoreCase(c)) {
+                    temp.add(p.getProductName());
                     break;
                 }
             }
@@ -194,24 +185,31 @@ public class Store implements Serializable {
         }
     }
 
-    public void removeProductFromOrder(Customer custy, Product removeThis){
+    public void removeProductFromOrder(Customer custy, String removeThis){
         try {
             for (Product p : custy.getOrder().getOrderList()) {
+                System.out.print("MAC TEST");
                 if(custy.getOrder().searchForProduct(removeThis)){
-                    custy.getOrder().getOrderList().remove(removeThis);
+                    custy.getOrder().getOrderList().remove(p);
                 }
             }
         }
             catch(NullPointerException e){
-                System.out.printf("Could not find this product in your list. %s", removeThis.getProductName());
+                System.out.printf("Could not find this product in your list. %s", removeThis);
             }
     }
 
     public void finalizeOrder(Customer c, Order o){
         //set a unique order number
+        int temp = 47561029;
 
-        o.setOrderNumber(orderNumber);
-        orderNumber++;
+        for(Order f : finalizedOrders){
+            if(temp <= f.getOrderNumber()){
+                temp = f.getOrderNumber()+1;
+            }
+        }
+        o.setOrderNumber(temp);
+
         //set email
         o.setCustEmail(c.getEmail());
         //set status
@@ -220,10 +218,8 @@ public class Store implements Serializable {
         o.setFinalizedDate(LocalDate.now());
         //add to finalizedOrders list
         this.finalizedOrders.add(o);
+        c.setOrder(new Order(c.getUsername()));
         //for testing, delete later
-        for(Order order123 : finalizedOrders){
-            System.out.println(order123.getOrderNumber());
-        }
     }
 
     //Getters & Setters

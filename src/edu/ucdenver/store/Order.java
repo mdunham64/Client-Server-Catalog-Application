@@ -75,9 +75,10 @@ public class Order implements Serializable {
         return orderList;
     }
 
-    public boolean searchForProduct(Product p){
+    public boolean searchForProduct(String p){
         for (Product temp : orderList) {
-            if (temp.getProductName().toLowerCase().equals(p.getProductName().toLowerCase())) {
+            if (temp.getProductName().toLowerCase().equalsIgnoreCase(p)) {
+                System.out.println("Test");
                 return true;
             }
         }return false;

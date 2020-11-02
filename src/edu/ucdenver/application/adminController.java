@@ -5,12 +5,14 @@ import edu.ucdenver.domainlogic.Category;
 import edu.ucdenver.server.Client;
 import edu.ucdenver.store.User;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.text.TextFlow;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class adminController {
     //Variables in Create New User Tab
@@ -44,7 +46,7 @@ public class adminController {
     //Add/Remove Category from Product
     public TextField txtIDToAddRemoveCategory;
     public Button btnRemoveCategoryFromProduct;
-    public ChoiceBox choiceBoxCategoryList;
+    public ChoiceBox<String> choiceBoxCategoryList;
     public Button btnAddCategoryToProduct;
     public TextFlow txtAddRemoveCategoryFromProductMessage;
     //ManageProductCategories
@@ -88,6 +90,37 @@ public class adminController {
     public adminController() {
         client = new Client();
         client.connect();
+    }
+    public void initialize(){
+        ArrayList<String> choiceBox = new ArrayList<>();
+        choiceBox.add("Home");
+        choiceBox.add("Phone");
+        choiceBox.add("Computer");
+        choiceBox.add("Book");
+        choiceBox.add("Electronic");
+    }
+
+    public void inputParser(String cmd){
+        Alert alert;
+        if(client.isConnected()){
+            try {
+                String response = client.sendRequest(cmd);
+                String[] respArgs = response.split("\\|");
+
+                switch (respArgs[0]) {
+                    //add cases here that need info from the client worker
+                    default:
+                        System.out.print("No Case Found");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                alert = new Alert(Alert.AlertType.ERROR, "Server Response:" + e.getMessage(), ButtonType.OK);
+                alert.show();
+            }
+        } else {
+            alert = new Alert(Alert.AlertType.ERROR, "Client is not connected", ButtonType.OK);
+            alert.show();
+        }
     }
 
     public void showAlert(String cmd){

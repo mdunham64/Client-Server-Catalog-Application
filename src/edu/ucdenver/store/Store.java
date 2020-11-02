@@ -16,7 +16,23 @@ public class Store implements Serializable {
     private ArrayList<Admin> admins = new ArrayList<>();
     private ArrayList<Order> finalizedOrders = new ArrayList<>();
     public Store(){
+        categories.add(new Category("HOME", "123", "Home Products"));
+        categories.add(new Category("ELECTRONICS", "127", "ELECTRONIC Products"));
+        categories.add(new Category("COMPUTERS", "126", "COMPUTER Products"));
+        categories.add(new Category("PHONES", "125", "PHONE Products"));
+        categories.add(new Category("BOOKS", "124", "BOOK Products"));
 
+        HomeProducts hp1 = new HomeProducts("000", "sample name", "test", "sample description",
+                LocalDate.of(2020, 10, 30), "bathroom");
+        HomeProducts hp2 = new HomeProducts("111", "sample name1", "test1", "test",
+                LocalDate.of(2020, 10, 30), "bathroom1");
+
+        productList.add(hp1);
+        productList.add(hp2);
+        /*this.store.addHomeProduct("000", "sample name", "test", "sample description",
+                LocalDate.of(2020, 10, 30), "bathroom");
+        this.store.addHomeProduct("111", "sample name1", "test1", "test",
+                LocalDate.of(2020, 10, 30), "bathroom1");*/
     }
 
     public void createNewAdmin(String email, String name, String pass) {
@@ -137,19 +153,50 @@ public class Store implements Serializable {
             }
         }return false;
     }
-    public void addCatToProduct(Product p, Category c){
-        if(!searchCategory(c.getCategoryName())){
-            p.addCategory(c.getCategoryName(), c.getCategoryID(), c.getCategoryDescription());
-        }
-        else{
-            System.out.println("Category Already Exists");
-        }
-    }
-    public void removeCatFromProduct(Product p, Category c){
-        for(Category c1 : p.categories){
-            if(c1.getCategoryName().equalsIgnoreCase(c.getCategoryName())){
-                p.categories.remove(c1);
+    public void addCatToProduct(String pID, String cat){
+        Category tempCat = new Category();
+
+        for(Category c : this.categories){
+            if(c.getCategoryName().equalsIgnoreCase(cat)){
+                tempCat = c;
             }
+        }
+        for(Product p : this.productList){
+            if(p.getProductID().equalsIgnoreCase(pID)){
+                for(Category c : p.getCategories()){
+                    if(c.getCategoryName().equalsIgnoreCase(cat)){
+                        System.out.println("Category already exists");
+                        return;
+                    }
+                    else{
+                        p.getCategories().add(tempCat);
+                        return;
+                    }
+                }
+            }
+        }
+            System.out.println("Product ID Not Found in Store");
+
+    }
+
+    public void removeCatFromProduct(String prodID, String cat) {
+        int counter = 0;
+        for (Product p : this.getProductList()) {
+            if (p.getProductID().equalsIgnoreCase(prodID)) {
+                counter++;
+                for (int i = p.categories.size()-1; i >= 0; i--) {
+                    if (p.categories.get(i).getCategoryName().equalsIgnoreCase(cat)) {
+                        p.getCategories().remove(p.categories.get(i));
+                        System.out.println("Category Removed From Product");
+                    }
+                    else {
+                        System.out.println("Category Does not Exist On this Product");
+                    }
+                }
+            }
+        }
+        if(counter == 0){
+            System.out.println("Product ID Not In Store");
         }
     }
 

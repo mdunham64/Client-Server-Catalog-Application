@@ -82,6 +82,7 @@ public class adminController {
     public TextField txtsetdefaultcatid;
     public TextField txtsetdefaultcatdesc;
     public CheckBox txtNewUserStatus;
+    public ChoiceBox<String> choiceBoxCategorytoRemove;
 
 
     Client client;
@@ -92,12 +93,9 @@ public class adminController {
         client.connect();
     }
     public void initialize(){
-        ArrayList<String> choiceBox = new ArrayList<>();
-        choiceBox.add("Home");
-        choiceBox.add("Phone");
-        choiceBox.add("Computer");
-        choiceBox.add("Book");
-        choiceBox.add("Electronic");
+        //send to server for category names
+        String icb = "ICBONE|";
+        inputParser(icb);
     }
 
     public void inputParser(String cmd){
@@ -109,6 +107,14 @@ public class adminController {
 
                 switch (respArgs[0]) {
                     //add cases here that need info from the client worker
+                    case "ICBONE":
+                        ArrayList<String> temp = new ArrayList<>();
+                        for(int i = 1; i < respArgs.length; i++){
+                            temp.add(respArgs[i]);
+                        }
+                        choiceBoxCategorytoRemove.setItems(FXCollections.observableArrayList(temp));
+                        choiceBoxCategoryList.setItems(FXCollections.observableArrayList(temp));
+                        break;
                     default:
                         System.out.print("No Case Found");
                 }
@@ -229,10 +235,15 @@ public class adminController {
     }
 
     public void RemoveCategoryFromProduct() {
+        String removeCatFromProd = "RCFP|";
+        removeCatFromProd += txtIDToAddRemoveCategory.getText() + "|" + choiceBoxCategorytoRemove.getValue();
+        showAlert(removeCatFromProd);
 
     }
 
     public void AddCategoryToProduct() {
+        String addCatToProd = "ACTP|" + txtIDToAddRemoveCategory.getText() + "|" + choiceBoxCategoryList.getValue();
+        showAlert(addCatToProd);
 
     }
 

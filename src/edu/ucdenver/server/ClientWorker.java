@@ -29,11 +29,7 @@ public class ClientWorker implements Runnable {
         //loading store from source folder
         //will be blank if nothing
         this.store = store;
-        this.store.addNewCategory("home","000","Description");
-        this.store.addHomeProduct("000", "sample name", "test", "sample description",
-                LocalDate.of(2020, 10, 30), "bathroom");
-        this.store.addHomeProduct("111", "sample name1", "test1", "test",
-                LocalDate.of(2020, 10, 30), "bathroom1");
+
     }
 
     private void getOutputStream(Socket clientConnection) throws IOException {
@@ -159,8 +155,6 @@ public class ClientWorker implements Runnable {
                             response = String.format("ERR|The category is not in the catalog.");
                     }
                     break;
-
-                    //TODO : THIS IS THE CUSTOMER SIDE OF THINGS
                 case "APO": // add product to order CUSTOMER
                 case "SAPO":
                     response = "OK|";
@@ -201,7 +195,36 @@ public class ClientWorker implements Runnable {
                         System.out.println(o);
                     }
                     break;
+                case "RCFP":
+                    // FIXME : display error if removeCatFromProd doesnt run successfully
+                    String prodID = arguments[1];
+                    String catergory = arguments[2];
 
+                    this.store.removeCatFromProduct(prodID, catergory);
+                    System.out.println(String.format("Categories in Product %s are now: ", prodID));
+                    for(Product p : this.store.getProductList()){
+                        if(p.getProductID().equalsIgnoreCase(prodID)){
+                            System.out.println(p.getCategories());
+                        }
+                    }
+                    response = "OK|Successfully removed";
+                    break;
+                case "ACTP":
+                    String prodID2 = arguments[1];
+                    String catToAdd = arguments[2];
+                    this.store.addCatToProduct(prodID2, catToAdd);
+                    for(Product p : this.store.getProductList()){
+                        if(p.getProductID().equalsIgnoreCase(prodID2)){
+                            System.out.println(p.getCategories());
+                        }
+                    }
+                    break;
+                case "ICBONE":
+                    response = "ICBONE";
+                    for(Category c : this.store.getCategories()){
+                        response += "|" + c.getCategoryName();
+                    }
+                    break;
                 case "T": // terminate client, will save store file
                     saveToFile();
                     response = "OK|Successfully saved the catalog.";

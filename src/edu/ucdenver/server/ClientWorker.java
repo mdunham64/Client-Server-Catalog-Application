@@ -9,6 +9,8 @@ import java.io.*;
 import java.net.Socket;
 import java.time.LocalDate;
 import java.time.LocalDate;
+import java.util.ArrayList;
+
 public class ClientWorker implements Runnable {
     private final Socket clientConnection;
     private PrintWriter output;
@@ -241,7 +243,17 @@ public class ClientWorker implements Runnable {
                         response += "|" + s;
                     }
                     break;
-
+                case "UMO":
+                    response = "UMO";
+                    ArrayList<Order> iter = store.getFinalOrdersByEmail(custUser.getEmail());
+                    for(Order ord : iter){
+                        response += "|"+ Integer.toString(ord.getOrderNumber());
+                    }
+                    break;
+                case "COO":
+                    response = "OK|";
+                    this.custUser.getOrder().getOrderList().clear();
+                    break;
                 default:
                     response = "ERR| Unknown Command.";
             }

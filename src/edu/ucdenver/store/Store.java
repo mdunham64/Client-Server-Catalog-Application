@@ -201,7 +201,7 @@ public class Store implements Serializable {
 
     public void finalizeOrder(Customer c, Order o){
         //set a unique order number
-        int temp = 0;
+        int temp = 47561029;
 
         for(Order f : finalizedOrders){
             if(temp <= f.getOrderNumber()){

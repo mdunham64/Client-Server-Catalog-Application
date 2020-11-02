@@ -51,9 +51,8 @@ public class catalogController{
     public ListView<String> listProductsInOrder;
     public Button btnUpdateOrderList;
     public Button btnUpdateMyOrders;
-    public ListView<Order> listMyOrders;
-
-    private Store theStore;
+    public ListView<String> listMyOrders;
+    public Button btnCancelOpenOrder;
 
     //Once again not sure if line below is needed
     Client client;
@@ -120,6 +119,14 @@ public class catalogController{
                         }
                         listProductsInOrder.getItems().clear();
                         listProductsInOrder.setItems(FXCollections.observableArrayList(temp3));
+                        break;
+                    case "UMO":
+                        ArrayList<String> temp4 = new ArrayList<>();
+                        for(int i = 1; i<respArgs.length; i++){
+                            temp4.add(respArgs[i]);
+                        }
+                        listMyOrders.getItems().clear();
+                        listMyOrders.setItems(FXCollections.observableArrayList(temp4));
                         break;
                     default:
                         System.out.print("No Case Found");
@@ -234,20 +241,27 @@ public class catalogController{
 
     public void UpdateMyOrdersbutton(ActionEvent actionEvent) {
         listMyOrders.getItems().clear();
-        listMyOrders.setItems(FXCollections.observableArrayList(theStore.getFinalOrdersByEmail(this.customer.getEmail())));
+        inputParser("UMO|");
+
+        //listMyOrders.setItems(FXCollections.observableArrayList(theStore.getFinalOrdersByEmail(this.customer.getEmail())));
 
     }
 
     public void cancelOrderButton(ActionEvent actionEvent) {
-        Order orderSelection = listMyOrders.getSelectionModel().getSelectedItem();
+        /*Order orderSelection = listMyOrders.getSelectionModel().getSelectedItem();
         for(Order o : this.theStore.getfinalizedOrders()){
             if(o.getOrderNumber() == orderSelection.getOrderNumber()){
                 this.theStore.getfinalizedOrders().remove(o);
             }
-        }
+        }*/
     }
     public void exitButton(ActionEvent actionEvent) {
         String cmd = "T";
         showAlert(cmd);
+    }
+
+    public void cancelOpenOrder(ActionEvent actionEvent) {
+        showAlert("COO|");
+        listProductsInOrder.getItems().clear();
     }
 }

@@ -14,16 +14,18 @@ public class AdminLauncher extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-
+        Stage newStage = new Stage();
         Parent root1 = FXMLLoader.load(getClass().getResource("adminUI.fxml"));
         primaryStage.setTitle("Admin Login Application");
         primaryStage.setScene(new Scene(root1, 720, 480));
-        showSecondaryStage();
-        primaryStage.show();
+        showSecondaryStage(newStage);
+        if(adminLoginController.isloggedin) {
+            newStage.close();
+            primaryStage.show();
+        }
     }
 
-    private void showSecondaryStage() throws IOException {
-        Stage newStage = new Stage();
+    private void showSecondaryStage(Stage newStage) throws IOException {
         Parent root2 = FXMLLoader.load(getClass().getResource("adminLoginUI.fxml"));
         newStage.setTitle("Admin Application");
         newStage.setScene(new Scene(root2,720,480));

@@ -19,11 +19,11 @@ functions.
 ``This package handles all connections between server and client.``
 <br />
 <br />
-*The server and client connect perfectly. An you play in the app, you can leave the serverApplication
+*The server and client connect perfectly. If you send commands in the app, you can leave the serverApplication
 on your console to watch it handle requests. 
 
-*There is on one glitch that we could not resolve. I cannot get to the bottom of why line 253 does not
-update the user email in  the client worker class. It's a smallish issue but it creates a problem because
+*There is one glitch that we could not resolve. We could not get to the bottom of why line 253 does not
+update the user email in  the client worker class. It's a small issue that won't effect the program as a whole but it creates a problem because
 the user is never logged in as a unique user. All new orders are created for the same 'default' user.  
 
 
@@ -35,14 +35,19 @@ All of this works as it should besides the issue mentioned above.
 
 To use our app, follow these steps: 
 1) Launch the serverApplication. Press 1 to load from the .ser file in the src folder. 
-2) Login the server with localhost at port 10001. 
-3) only one Admin login is saved in the .ser file. email Oleksiy@bestta.com / password is password
-4) If you make new products or users, be sure to safely exit the app. 
-5) To launch the customer app, us the same server logins and you can use jake@mac.com password: 1234 or
+2) Login to the server with localhost at port 10001. 
+3) only one Admin login is saved in the .ser file. 
+    <br /> email:
+    `Oleksiy@bestta.com`
+    <br />
+    password: 
+    `password`
+4) If you make new products or users, be sure to safely exit the app using the appropriate tab. 
+5) To launch the customer app, use the same server logins and you can use email: `jake@mac.com` and password: `1234` or
     you can make a user in thee admin app. Safely exit on the last tab to save. 
     
-    Programmed by: 
-            Jake Bush
-            Ronald Jenkins
-            MacGyverDunham
+    Programmed by: <br />
+            Jake Bush <br />
+            Ronald Jenkins <br />
+            MacGyver Dunham<br />
             Savannah Murphy

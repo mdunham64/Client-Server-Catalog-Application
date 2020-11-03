@@ -1,15 +1,11 @@
 package edu.ucdenver.server;
 
-import com.sun.deploy.ui.ProgressDialog;
 import edu.ucdenver.domainlogic.*;
 import edu.ucdenver.store.*;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import java.io.*;
 import java.net.Socket;
 import java.time.LocalDate;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class ClientWorker implements Runnable {
@@ -22,13 +18,10 @@ public class ClientWorker implements Runnable {
     private Customer custUser = new Customer("default", "email", "password");
     private Store store;
 
-
     public ClientWorker(Socket connection, Store store, int id){
         this.clientConnection = connection;
         this.keepRunningClient = true;
         this.id = id;
-        //loading store from source folder
-        //will be blank if nothing
         this.store = store;
 
     }
@@ -72,7 +65,8 @@ public class ClientWorker implements Runnable {
                         response = String.format("OK|Successfully Added new user: %s",clientMessage);
                     }
                     break;
-                case "LAU": // login a user, lets decide who logs in
+                case "TEST": // connects a user to the server
+                    response = "OK|Successfully connected to the Catalog.";
 
                     break;
                 case "ANP": // add new product ADMIN
@@ -231,14 +225,15 @@ public class ClientWorker implements Runnable {
                 case "T": // terminate client, will save store file
                     saveToFile();
                     response = "OK|Successfully saved the catalog.";
+                    closeClientConnection();
                     break;
-                case "TEST":
+                case "STORE":
                     break;
                 case "AL":
-                    for (User u : User.users){
+                    for (User u : this.store.getAdmins()){
                         if(u.getEmail().equalsIgnoreCase(arguments[1])){
                             if(u.getPassword().equalsIgnoreCase(arguments[2])){
-                                response = "OK|Successfully logged into Admin Application.";
+                                response = "OK|Successfully logged into Admin Application. Please close this window to proceed.";
                             }
                             else{
                                 response = "ERR|Incorrect password.";
@@ -346,33 +341,6 @@ public class ClientWorker implements Runnable {
         finally{
             closeClientConnection();
         }
-    }
-
-    //TODO: This is to read from a store.java file and store a
-    //    : file. Its saving the file correctly "i think" but when you
-    //  :log in with a new client added users aren't in there. loadFromFile()
-    //  :is probably the problem.
-    public Store loadFromFile(){
-        String filename = "./StoreFile.ser";
-        ObjectInputStream ois = null;
-        Store theStore = new Store();
-        try{
-            ois = new ObjectInputStream(new FileInputStream(filename));
-            theStore = (Store) ois.readObject();
-        }
-        catch(Exception e){
-            e.printStackTrace();
-            theStore = new Store();
-        }
-        finally {
-            if ( ois != null){
-                try{
-                    ois.close();
-                }
-                catch(IOException ioe){ioe.printStackTrace();}
-            }
-        }
-        return theStore;
     }
 
     public void saveToFile(){

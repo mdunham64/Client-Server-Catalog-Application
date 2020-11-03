@@ -1,6 +1,6 @@
 package edu.ucdenver.store;
 
-import com.sun.tools.corba.se.idl.constExpr.Or;
+
 import edu.ucdenver.domainlogic.*;
 
 import javax.rmi.CORBA.PortableRemoteObjectDelegate;
@@ -16,6 +16,7 @@ public class Store implements Serializable {
     private ArrayList<Admin> admins = new ArrayList<>();
     private ArrayList<Order> finalizedOrders = new ArrayList<>();
     public Store(){
+        /*
         categories.add(new Category("HOME", "123", "Home Products"));
         categories.add(new Category("ELECTRONICS", "127", "ELECTRONIC Products"));
         categories.add(new Category("COMPUTERS", "126", "COMPUTER Products"));
@@ -33,6 +34,7 @@ public class Store implements Serializable {
         finalTest.setCustEmail("jake@mac.com");
         finalTest.setFinalizedDate(LocalDate.of(2015, 10, 31));
         finalizedOrders.add(finalTest);
+        */
     }
 
     public void createNewAdmin(String email, String name, String pass) {

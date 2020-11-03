@@ -250,7 +250,7 @@ public class ClientWorker implements Runnable {
                     for (User u : this.store.getCustomers()){
                         if(u.getEmail().equalsIgnoreCase(arguments[1])){
                             if(u.getPassword().equalsIgnoreCase(arguments[2])){
-                                this.custUser = new Customer("default", arguments[1], "password");
+                                this.custUser.setEmail(arguments[1]);
                                 response = "OK|Successfully logged into Customer Application. Please close this window to proceed.";
                             }
                             else{

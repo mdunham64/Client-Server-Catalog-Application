@@ -23,7 +23,6 @@ public class ClientWorker implements Runnable {
         this.keepRunningClient = true;
         this.id = id;
         this.store = store;
-
     }
 
     private void getOutputStream(Socket clientConnection) throws IOException {
@@ -43,6 +42,7 @@ public class ClientWorker implements Runnable {
         displayMessage("CLIENT SAID>>>" + clientMessage);
         String[] arguments = clientMessage.split("\\|"); // this splits the string using | as the delimiter
         String response = ""; //This will bethe response to the server.
+        String custEmail = "aaa";
 
         try {
             switch (arguments[0]) { //arguments[0] must be the command
@@ -243,6 +243,27 @@ public class ClientWorker implements Runnable {
                             response = "ERR|Incorrect email.";
                         }
                     }
+                    break;
+                case "USERLOGIN":
+                    System.out.println(arguments[1]);
+
+                    for (User u : this.store.getCustomers()){
+                        if(u.getEmail().equalsIgnoreCase(arguments[1])){
+                            if(u.getPassword().equalsIgnoreCase(arguments[2])){
+                                this.custUser = new Customer("default", arguments[1], "password");
+                                response = "OK|Successfully logged into Customer Application. Please close this window to proceed.";
+                            }
+                            else{
+                                response = "ERR|Incorrect password.";
+                            }
+                        }
+                        else{
+                            response = "ERR|Incorrect email.";
+                        }
+                    }
+                    break;
+                case "INITEMAIL":
+                    response = "INITEMAIL|" + this.custUser.getEmail();
                     break;
                 case "SAVE":
                     response = "OK|Saved Catalog to Catalog.ser.";

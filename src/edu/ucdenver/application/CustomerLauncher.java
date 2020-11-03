@@ -26,7 +26,7 @@ public class CustomerLauncher extends Application {
     private void showSecondaryStage(Stage newStage) throws IOException {
         Parent root2 = FXMLLoader.load(getClass().getResource("customerLoginUI.fxml"));
         newStage.setTitle("Customer Application");
-        newStage.setScene(new Scene(root2,670,350));
+        newStage.setScene(new Scene(root2,670,500));
         newStage.showAndWait();
     }
 

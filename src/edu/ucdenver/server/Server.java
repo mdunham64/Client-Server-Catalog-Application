@@ -61,6 +61,9 @@ public class Server implements Runnable {
             for (User u : this.store.getAdmins())
                 System.out.println(u.getEmail() + "|" + u.getPassword());
 
+            for (User u : this.store.getCustomers())
+                System.out.println(u.getEmail() + "|" + u.getPassword());
+
             while(true) {
                 try {
                     Socket clientConnection = this.waitForClientConnection();

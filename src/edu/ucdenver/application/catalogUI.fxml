@@ -83,7 +83,7 @@
                         </AnchorPane>
                     </content>
                 </Tab>
-                <Tab text="Modify Order">
+                <Tab fx:id="tabModifyOrder" onSelectionChanged="#modifyOrderTab" text="Modify Order">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
@@ -136,7 +136,7 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
-                                <Button fx:id="btnExit" layoutX="362.0" layoutY="239.0" mnemonicParsing="false" onAction="#exitButton" prefHeight="84.0" prefWidth="167.0" text="Exit" />
+                                <Button fx:id="btnExit" layoutX="362.0" layoutY="239.0" mnemonicParsing="false" onAction="#exitButton" prefHeight="84.0" prefWidth="167.0" text="Save &amp; Exit" />
                             </children>
                         </AnchorPane>
                     </content>

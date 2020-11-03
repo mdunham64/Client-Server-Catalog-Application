@@ -12,6 +12,7 @@ import edu.ucdenver.store.Store;
 import edu.ucdenver.store.User;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.scene.control.*;
 import javafx.scene.input.TouchEvent;
 import javafx.scene.text.TextFlow;
@@ -53,6 +54,7 @@ public class catalogController{
     public Button btnUpdateMyOrders;
     public ListView<String> listMyOrders;
     public Button btnCancelOpenOrder;
+    public Tab tabModifyOrder;
 
     //Once again not sure if line below is needed
     Client client;
@@ -62,8 +64,6 @@ public class catalogController{
         client = new Client();
         client.connect();
 
-        String cmd = "LCC|";
-        inputParser(cmd);
         this.choiceBoxListofCategory = new ChoiceBox<String>();
     }
 
@@ -84,6 +84,9 @@ public class catalogController{
                         this.customer.setUsername(respArgs[1]);
                         this.customer.setEmail(respArgs[2]);
                         this.customer.setPassword(respArgs[3]);
+                        break;
+                    case "INITEMAIL":
+                        this.customer.setEmail(respArgs[1]);
                         break;
                     case "ICB":
                         ArrayList<String> temp = new ArrayList<>();
@@ -117,6 +120,7 @@ public class catalogController{
                         for(int i =1; i<respArgs.length; i++){
                             temp3.add(respArgs[i]);
                         }
+
                         listProductsInOrder.getItems().clear();
                         listProductsInOrder.setItems(FXCollections.observableArrayList(temp3));
                         break;
@@ -226,5 +230,9 @@ public class catalogController{
     public void cancelOpenOrder(ActionEvent actionEvent) {
         showAlert("COO|");
         listProductsInOrder.getItems().clear();
+    }
+
+    public void modifyOrderTab(Event event) {
+        inputParser("INITEMAIL|");
     }
 }

@@ -10,7 +10,7 @@ import java.io.IOException;
 
 
 public class customerLoginController {
-    public TextField txtServerPortErrorMessage;
+    public static boolean isloggedin = false;
     public TextField txtUserServerIP;
     public TextField txtUserPortNum;
     public Button btnAttemptConnection;
@@ -25,9 +25,17 @@ public class customerLoginController {
         String serverIP = txtUserServerIP.getText();
         String serverport = txtUserPortNum.getText();
         int serverportint = Integer.parseInt(serverport);
-        client = new Client(serverIP,serverportint);
-        client.connect();
-        String cmd = "TEST|";
+        String cmd = "";
+        if((serverIP.equalsIgnoreCase("localhost")) && (serverportint == 10001)) {
+            client = new Client(serverIP, serverportint);
+            client.connect();
+            cmd = "TEST|";
+        }
+        else{
+            Alert alert;
+            alert = new Alert(Alert.AlertType.ERROR, "Incorrect server IP or port number. Try using IP: localhost and port: 10001",ButtonType.OK);
+            alert.show();
+        }
 
         Alert alert;
         if(client.isConnected()){
@@ -37,7 +45,8 @@ public class customerLoginController {
 
                 switch (respArgs[0]) {
                     case "OK":
-                        alert = new Alert(Alert.AlertType.CONFIRMATION, "Action complete: " + respArgs[1], ButtonType.OK);
+                        alert = new Alert(Alert.AlertType.CONFIRMATION, "Action complete: " + respArgs[1] + " Please close this window to proceed.", ButtonType.OK);
+                        isloggedin = true;
                         alert.show();
                         break;
                     case "ERR":
@@ -56,6 +65,4 @@ public class customerLoginController {
         }
 
     }
-    
-    
 }

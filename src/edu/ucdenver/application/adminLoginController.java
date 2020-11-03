@@ -16,17 +16,15 @@ import java.io.IOException;
 
 
 public class adminLoginController {
+    public static boolean isloggedin = false;
     public TextField txtAdminServer;
     public TextField txtAdminPort;
     public TextField txtAdminEmail;
     public TextField txtAdminPassword;
-    public TextField txtServerPortErrorMessage;
-    public TextField txtAdminLoginErrorMessage;
     public Button btnConnectAdmin;
     public Button btnLogin;
     public Tab tabAdminConnect;
     public Tab tabAdminLogin;
-    public boolean isloggedin = false;
 
     Client client;
 
@@ -66,10 +64,17 @@ public class adminLoginController {
         String serverip = txtAdminServer.getText();
         String port = txtAdminPort.getText();
         int portnum = Integer.parseInt(port);
-        client = new Client(serverip,portnum);
-        client.connect();
-        String cmd = "TEST|";
-        showAlert(cmd);
+        if((serverip.equalsIgnoreCase("localhost")) && (portnum == 10001)) {
+            client = new Client(serverip, portnum);
+            client.connect();
+            String cmd = "TEST|";
+            showAlert(cmd);
+        }
+        else{
+            Alert alert;
+            alert = new Alert(Alert.AlertType.ERROR, "Incorrect server IP or port number. Try using IP: localhost and port: 10001",ButtonType.OK);
+            alert.show();
+        }
     }
 
     public void AdminLoginToServer(ActionEvent actionEvent){
@@ -87,7 +92,7 @@ public class adminLoginController {
                     case "OK":
                         alert = new Alert(Alert.AlertType.CONFIRMATION, "Action complete: " + respArgs[1], ButtonType.OK);
                         alert.show();
-                        this.isloggedin=true;
+                        isloggedin=true;
                         break;
                     case "ERR":
                         alert = new Alert(Alert.AlertType.ERROR, respArgs[1], ButtonType.OK);
@@ -102,9 +107,6 @@ public class adminLoginController {
         } else {
             alert = new Alert(Alert.AlertType.ERROR, "Client is not connected", ButtonType.OK);
             alert.show();
-        }
-        if(this.isloggedin){
-
         }
     }
 }
